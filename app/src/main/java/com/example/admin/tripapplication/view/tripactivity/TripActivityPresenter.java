@@ -4,7 +4,7 @@ import android.content.Context;
 
 public class TripActivityPresenter implements TripActivityContract.Presenter {
     TripActivityContract.View view;
-    private static final String TAG = "MainActivityPresenter";
+    private static final String TAG = "TripActivityPresenter";
     private Context context;
 
     @Override

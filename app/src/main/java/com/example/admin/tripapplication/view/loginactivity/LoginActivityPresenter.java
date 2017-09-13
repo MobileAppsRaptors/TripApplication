@@ -4,7 +4,7 @@ import android.content.Context;
 
 public class LoginActivityPresenter implements LoginActivityContract.Presenter {
     LoginActivityContract.View view;
-    private static final String TAG = "MainActivityPresenter";
+    private static final String TAG = "LoginActivityPresenter";
     private Context context;
 
     @Override
