@@ -1,4 +1,4 @@
-package com.example.admin.tripapplication.model.firebasemodel;
+package com.example.admin.tripapplication.model.firebase;
 
 import android.location.Location;
 

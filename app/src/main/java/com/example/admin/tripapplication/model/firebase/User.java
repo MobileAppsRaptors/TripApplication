@@ -1,4 +1,4 @@
-package com.example.admin.tripapplication.model.firebasemodel;
+package com.example.admin.tripapplication.model.firebase;
 
 import android.net.Uri;
 
@@ -11,7 +11,8 @@ import java.util.List;
 
 public class User {
 
-    String name;
+    String firstName;
+    String lastName;
     String phoneNumber;
     Uri imageUri;
     URL googleAcctLink;
@@ -31,8 +32,9 @@ public class User {
     List<Trip> tripList;
 
     //TODO add builder for this pile of shit
-    public User(String name, String phoneNumber, Uri imageUri, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, String preferredLanguage, Car car, float rating, List<Review> review, List<Trip> tripList) {
-        this.name = name;
+    public User(String firstName, String lastName, String phoneNumber, Uri imageUri, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, String preferredLanguage, Car car, float rating, List<Review> review, List<Trip> tripList) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.imageUri = imageUri;
         this.googleAcctLink = googleAcctLink;
@@ -52,12 +54,20 @@ public class User {
         this.tripList = tripList;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhoneNumber() {

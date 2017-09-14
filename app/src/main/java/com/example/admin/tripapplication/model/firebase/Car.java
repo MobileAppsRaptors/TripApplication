@@ -1,4 +1,4 @@
-package com.example.admin.tripapplication.model.firebasemodel;
+package com.example.admin.tripapplication.model.firebase;
 
 /**
  * Created by Admin on 9/13/2017.
