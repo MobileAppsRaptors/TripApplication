@@ -4,7 +4,7 @@ import android.content.Context;
 
 public class ProfileActivityPresenter implements ProfileActivityContract.Presenter {
     ProfileActivityContract.View view;
-    private static final String TAG = "MainActivityPresenter";
+    private static final String TAG = "ProfileActivityPresenter";
     private Context context;
 
     @Override
