@@ -27,5 +27,5 @@ public class TripActivity extends AppCompatActivity {
 
     //TODO get specified trip from database
 
-    //testing new commit
+    //testing new commit pancho
 }
