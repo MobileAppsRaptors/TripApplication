@@ -16,6 +16,8 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
+import static com.example.admin.tripapplication.util.CONSTANTS.*;
+
 /**
  * Created by Admin on 9/12/2017.
  */
@@ -26,7 +28,7 @@ public class PlacesHelper {
     //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
 
     public static final String TAG = "PlacesAPI";
-    public static final String API_KEY = "AIzaSyAWtUVJsk4Ukxs6paYKrPiAmk2uVSdYlyA";
+
 
     OkHttpClient client = new OkHttpClient();
     PlacesHelper(){}
@@ -41,13 +43,9 @@ public class PlacesHelper {
     //TODO might need to add address type
     public AutocompleteResult GetAutocompleteData(String input) {
         HttpUrl url = new HttpUrl.Builder()
-                .scheme("https")
-                .host("maps.googleapis.com")
-                .addPathSegment("maps")
-                .addPathSegment("api")
-                .addPathSegment("place")
-                .addPathSegment("autocomplete")
-                .addPathSegment("json")
+                .scheme(URL_SCHEME)
+                .host(GOOGLE_PLACES_HOST)
+                .addPathSegments(AUTOCOMPLETE_GOOGLEAPI_PATH)
                 .addQueryParameter("type", "geocode")
                 .addQueryParameter("input", input)
                 .addQueryParameter("key", API_KEY)
