@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.injection.loginactivity.DaggerLoginActivityComponent;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import javax.inject.Inject;
 
