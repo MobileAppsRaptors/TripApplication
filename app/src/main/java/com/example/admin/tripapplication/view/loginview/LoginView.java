@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.injection.login.DaggerLoginComponent;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import javax.inject.Inject;
 
