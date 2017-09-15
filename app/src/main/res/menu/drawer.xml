@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/publish_trip"
+        android:icon="@drawable/ic_travel"
+        android:title="Publish a trip" />
+    <item
+        android:id="@+id/search_trip"
+        android:icon="@drawable/ic_search"
+        android:title="Search a trip" />
+    <item
+        android:id="@+id/messages"
+        android:icon="@drawable/ic_message"
+        android:title="Messages" />
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_info"
+            android:title="About" />
+    </group>
+
+
+</menu>
