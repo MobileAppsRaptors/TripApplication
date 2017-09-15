@@ -8,7 +8,7 @@ import com.example.admin.tripapplication.model.firebase.Car;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.places.nearbyresult.Location;
-import com.example.admin.tripapplication.view.loginactivity.LoginActivity;
+import com.example.admin.tripapplication.view.loginview.LoginView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
