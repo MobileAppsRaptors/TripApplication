@@ -7,6 +7,8 @@ import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,7 +32,7 @@ public class FirebaseHelper {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips");
 
-        myRef.setValue(trip)
+        myRef.push().setValue(trip)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
 
                     @Override
@@ -44,7 +46,7 @@ public class FirebaseHelper {
         return true;
     }
 
-    public void GetTrips(Location location, int radius){
+    /*public void GetTrips(Location location, int radius){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("/trips/");
         myRef.orderByKey().addChildEventListener(new ChildEventListener() {
@@ -67,27 +69,37 @@ public class FirebaseHelper {
 
             // ...
         });
+    }*/
+
+    //public ArrayList<Trip> GetTrips(String address, int radius){}
+
+
+    public boolean AddNewUser(User user) throws InterruptedException {
+        final CountDownLatch writeSignal = new CountDownLatch(1);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser myFBUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference myRef = database.getReference("users").child(myFBUser.getUid()).child("private");
+
+        myRef.push().setValue(user)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull final Task<Void> task) {
+                        writeSignal.countDown();
+                    }
+                });
+
+        writeSignal.await(10, TimeUnit.SECONDS);
+        System.out.println(TAG + "Wrote data");
+        return true;
     }
 
-    /*public ArrayList<Trip> GetTrips(String address, int radius){
+    //public User GetPublicUserData(){}
 
-    }
+    //public User GetPrivateUserData(){}
 
-
-
-    public boolean AddNewUser(User user){
-        return false;
-    }
-
-    public User GetPublicUserData(){
-
-    }
-
-    public User GetPrivateUserData(){
-
-    }
-
-    public boolean UpdateUser(User user){
+    /*public boolean UpdateUser(User user){
+        //might need a transaction
         return false;
     }
 

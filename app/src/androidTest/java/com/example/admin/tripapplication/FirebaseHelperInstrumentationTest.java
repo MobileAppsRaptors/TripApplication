@@ -2,6 +2,7 @@ package com.example.admin.tripapplication;
 
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
+import android.util.Log;
 
 import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.model.firebase.Car;
@@ -19,7 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -45,6 +48,7 @@ public class FirebaseHelperInstrumentationTest {
     List<User> passengerList;
     User user;
 
+    boolean first_time = true;
     FirebaseUser fb_user;
     FirebaseHelper helper;
     private FirebaseAuth mAuth;
@@ -63,12 +67,21 @@ public class FirebaseHelperInstrumentationTest {
         }
     };
 
-    @Before
-    public void Setup() {
-        if(!FirebaseApp.getApps(InstrumentationRegistry.getContext()).isEmpty()) {
+    @BeforeClass
+    public static void init(){
+        if (!FirebaseApp.getApps(InstrumentationRegistry.getContext()).isEmpty()) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         }
-        sign_in();
+    }
+
+    @Before
+    public void Setup() {
+
+        try {
+            sign_in();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         make_trip();
         helper = new FirebaseHelper();
 
@@ -79,24 +92,36 @@ public class FirebaseHelperInstrumentationTest {
         assertTrue(helper.AddTrip(trip));
     }
 
-    //TODO add logic to check if user exists
-    private void sign_in(){
+    @Test
+    public void user_isAdded_toFirebase() throws Exception{
+        assertTrue(helper.AddNewUser(user));
+    }
+
+    private CountDownLatch authSignal = null;
+    private void sign_in() throws InterruptedException {
+        authSignal = new CountDownLatch(1);
         mAuth = FirebaseAuth.getInstance();
         mAuth.addAuthStateListener(mAuthListener);
         System.out.println(TAG + "starting create");
-        mAuth.createUserWithEmailAndPassword("jeff@example.com", "aruAeu234#$")
-                .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+        if(mAuth.getCurrentUser() == null) {
+            mAuth.createUserWithEmailAndPassword("jeff@example.com", "aruAeu234#$")
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
-                        if (!task.isSuccessful()) {
-                            System.out.println(TAG + "signInWithEmail:failed" + task.getException());
-                        } else {
-                            System.out.println(TAG + "signInWithEmail:onComplete:" + task.isSuccessful());
-                            fb_user = FirebaseAuth.getInstance().getCurrentUser();
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                System.out.println(TAG + "signInWithEmail:failed" + task.getException());
+                            } else {
+                                System.out.println(TAG + "signInWithEmail:onComplete:" + task.isSuccessful());
+                                fb_user = FirebaseAuth.getInstance().getCurrentUser();
+                            }
+                            authSignal.countDown();
                         }
-                    }
-                });
+                    });
+        } else {
+            authSignal.countDown();
+        }
+        authSignal.await(10, TimeUnit.SECONDS);
     }
 
     private void make_trip(){
@@ -135,12 +160,11 @@ public class FirebaseHelperInstrumentationTest {
     @After
     public void teardown(){
 
-        if(mAuthListener != null){
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-         if(fb_user != null){
+        if(fb_user != null){
             fb_user.delete();
         }
 
     }
+
+
 }
