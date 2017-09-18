@@ -34,8 +34,10 @@ dependencies {
     compile 'com.android.support:design:26.+'
 
     //Firebase
-    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.google.firebase:firebase-auth:11.0.1'
     compile 'com.google.firebase:firebase-database:10.0.1'
+    compile 'com.google.android.gms:play-services-auth:11.0.1'
+
 
     //multidex support
     compile 'com.android.support:multidex:1.0.1'
