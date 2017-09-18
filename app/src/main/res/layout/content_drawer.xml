@@ -10,11 +10,15 @@
     tools:showIn="@layout/app_bar">
 
 
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:id="@+id/content_main">
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/content_main"/>
+    </ScrollView>
 
-    </android.support.constraint.ConstraintLayout>
 </LinearLayout>

@@ -21,16 +21,25 @@ public class CONSTANTS {
     // -------------------Used for fragments and Navigation Drawer --------------------------
     public static final String PACKAGE_NAME = "";
 
-    //Relation name menu -> Class Fragment
+    //Relation name menu -> Class Fragment   and Class Fragment -> Menu
     public static Hashtable<String, String> classSubName = new Hashtable<String, String>();
     static {
         classSubName.put("Home","view.homeview.HomeView");
+        classSubName.put("HomeView","Home");
 
         classSubName.put("Publish a trip","view.tripview.TripView");
+        classSubName.put("TripView","Publish a trip");
+
         classSubName.put("Search a trip","view.triplistview.TripListView");
+        classSubName.put("TripListView","Search a trip");
+
         classSubName.put("Messages","view.messagesview.MessagesView");
+        classSubName.put("MessagesView","Messages");
 
         classSubName.put("Settings","view.settingsview.SettingsView");
+        classSubName.put("SettingsView","Settings");
+
         classSubName.put("About","view.aboutview.AboutView");
+        classSubName.put("AboutView","About");
     }
 }

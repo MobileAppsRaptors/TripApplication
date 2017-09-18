@@ -2,15 +2,15 @@ package com.example.admin.tripapplication.view.aboutview;
 
 import android.content.Context;
 
-import com.example.admin.tripapplication.view.tripview.TripContract;
+import com.example.admin.tripapplication.view.aboutview.AboutContract.View;
 
-public class AboutPresenter implements TripContract.Presenter {
-    TripContract.View view;
+public class AboutPresenter implements AboutContract.Presenter {
+    View view;
     private static final String TAG = "TripActivityPresenter";
     private Context context;
 
     @Override
-    public void attachView(TripContract.View view) {
+    public void attachView(View view) {
         this.view = view;
     }
 
