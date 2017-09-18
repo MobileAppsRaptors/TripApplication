@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
+import com.example.admin.tripapplication.R;
+
 public class Main2Activity extends AppCompatActivity {
 
     @Override

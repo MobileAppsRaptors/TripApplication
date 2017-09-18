@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.admin.tripapplication.R;
+
 /**
  * Created by segundoauqui on 9/15/17.
  */
