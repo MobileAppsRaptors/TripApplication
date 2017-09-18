@@ -1,12 +1,12 @@
-package com.example.admin.tripapplication.view.messagesview;
+package com.example.admin.tripapplication.view.placespickerview;
 
 import android.content.Context;
 
-import com.example.admin.tripapplication.view.messagesview.MessagesContract.View;
+import com.example.admin.tripapplication.view.placespickerview.PlacesPickerContract.View;
 
-public class MessagesPresenter implements MessagesContract.Presenter {
+public class PlacesPickerPresenter implements PlacesPickerContract.Presenter {
     View view;
-    private static final String TAG = "MessageActivityPresenter";
+    private static final String TAG = "PlacesPickerActivityPresenter";
     private Context context;
 
     @Override

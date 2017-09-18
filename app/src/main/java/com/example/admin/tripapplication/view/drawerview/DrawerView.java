@@ -3,6 +3,7 @@ package com.example.admin.tripapplication.view.drawerview;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.injection.drawer.DaggerDrawerComponent;
 import com.example.admin.tripapplication.view.homeview.HomeView;
@@ -40,6 +42,7 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TypefaceProvider.registerDefaultIconSets();
         setContentView(R.layout.activity_drawer);
 
         ButterKnife.bind(this);
@@ -82,6 +85,12 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
         } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
         } else {
+            //Obtaining Titles when back with classSubName
+            FragmentManager manager = getSupportFragmentManager();
+            String class_s = manager.getBackStackEntryAt(manager.getBackStackEntryCount()-2).getName();
+            String class_s_split [] = class_s.split("\\.");
+            class_s = class_s_split[class_s_split.length-1];
+            setTitle(classSubName.get(class_s));
             super.onBackPressed();
         }
     }

@@ -24,6 +24,58 @@
         <item name="android:layout_marginBottom">10sp</item>
     </style>
 
+    <style name="TextView1">
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">10sp</item>
+        <item name="android:background">@drawable/white_button_boarder</item>
+    </style>
+
+    <style name="dollar">
+        <item name="android:textColor">@color/bootstrap_brand_success</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">10sp</item>
+    </style>
+
+    <style name="TextView2">
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">10sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView3">
+        <item name="android:textSize">30sp</item>
+        <item name="android:padding">10sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="InstructionText">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="BlueText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/bootstrap_brand_primary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ButtonSubmit">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/bootstrap_gray_light</item>
+        <item name="android:textSize">20sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/bootstrap_gray_light</item>
+        <item name="colorControlNormal">@color/bootstrap_gray_light</item>
+        <item name="colorControlActivated">@color/bootstrap_gray_light</item>
+    </style>
+
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/logobackground</item>
     </style>

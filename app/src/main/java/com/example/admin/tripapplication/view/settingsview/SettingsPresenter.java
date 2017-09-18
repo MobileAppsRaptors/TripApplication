@@ -2,15 +2,15 @@ package com.example.admin.tripapplication.view.settingsview;
 
 import android.content.Context;
 
-import com.example.admin.tripapplication.view.tripview.TripContract;
+import com.example.admin.tripapplication.view.settingsview.SettingsContract.View;
 
-public class SettingsPresenter implements TripContract.Presenter {
-    TripContract.View view;
-    private static final String TAG = "TripActivityPresenter";
+public class SettingsPresenter implements SettingsContract.Presenter {
+    View view;
+    private static final String TAG = "SettingsActivityPresenter";
     private Context context;
 
     @Override
-    public void attachView(TripContract.View view) {
+    public void attachView(View view) {
         this.view = view;
     }
 

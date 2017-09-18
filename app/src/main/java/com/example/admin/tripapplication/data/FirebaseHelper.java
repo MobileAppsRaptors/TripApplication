@@ -1,12 +1,16 @@
 package com.example.admin.tripapplication.data;
 
-import android.location.Location;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
+import com.example.admin.tripapplication.model.places.nearbyresult.Location;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,12 +29,16 @@ public class FirebaseHelper {
 
     public static final String TAG = "FirebaseHelper";
 
-    public boolean AddTrip(Trip trip) throws InterruptedException {
+    public boolean AddTrip(Trip trip) {
         final CountDownLatch writeSignal = new CountDownLatch(1);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips");
 
-        myRef.setValue(trip)
+        //This adds a random key under trips
+        myRef.push();
+
+        String trip_key = myRef.getKey();
+        myRef.child(trip_key).setValue(trip)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
 
                     @Override
@@ -39,9 +47,51 @@ public class FirebaseHelper {
                     }
                 });
 
-        writeSignal.await(10, TimeUnit.SECONDS);
+        AddGeoFire(trip_key, trip.getOrigin(), "origin");
+        AddGeoFire(trip_key, trip.getDestination(), "destination");
+
+        AddTripUser(trip_key, trip);
+
+        try {
+            writeSignal.await(10, TimeUnit.SECONDS);
+        }catch(Exception ex){}
         System.out.println(TAG + "Wrote data");
+
         return true;
+    }
+
+    private void AddTripUser(String trip_key, Trip trip) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/trips");
+
+        myRef.push();
+
+        String trip_user_key = myRef.getKey();
+
+        myRef.child(trip_user_key).setValue(trip)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull final Task<Void> task) {
+                        if (!task.isSuccessful())
+                            Log.d(TAG, "onComplete:  Error inside addtripuser" + task.getException().getMessage());
+                    }
+                });
+    }
+
+    private void AddGeoFire(String trip_key, Location location, String source) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("trips/geofire/" + source);
+        GeoFire geoFire = new GeoFire(ref);
+        geoFire.setLocation(trip_key, new GeoLocation(location.getLat(),location.getLng()), new GeoFire.CompletionListener() {
+            @Override
+            public void onComplete(String key, DatabaseError error) {
+                if (error != null) {
+                    System.err.println("There was an error saving the location to GeoFire: " + error);
+                } else {
+                    System.out.println("Location saved on server successfully!" + key);
+                }
+            }
+        });
     }
 
     public void GetTrips(Location location, int radius){

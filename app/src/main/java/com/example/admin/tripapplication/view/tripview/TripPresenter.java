@@ -2,6 +2,9 @@ package com.example.admin.tripapplication.view.tripview;
 
 import android.content.Context;
 
+import com.example.admin.tripapplication.data.FirebaseHelper;
+import com.example.admin.tripapplication.model.firebase.Trip;
+
 public class TripPresenter implements TripContract.Presenter {
     TripContract.View view;
     private static final String TAG = "TripActivityPresenter";
@@ -13,13 +16,16 @@ public class TripPresenter implements TripContract.Presenter {
     }
 
     @Override
-    public void setContext(Context context) {
-        this.context = context;
+    public void detachView() {
+        this.view = null;
     }
 
     @Override
-    public void detachView() {
-        this.view = null;
+    public void InsertTrip(Trip trip){
+        FirebaseHelper firebaseHelper = new FirebaseHelper();
+        boolean status = firebaseHelper.AddTrip(trip);
+
+        view.sendInsertStatus(status);
     }
 
 }

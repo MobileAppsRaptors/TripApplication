@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Functions {
 
@@ -46,7 +47,7 @@ public class Functions {
                         manager.beginTransaction().replace(id, ft, list.get(i)).addToBackStack(list.get(i)).commit();
                     }
                 }
-                fTransaction.replace(id, fragment, who).addToBackStack(who).commit();
+                fTransaction.replace(id, fragment, who).addToBackStack(who).setBreadCrumbTitle(who).commit();
             } else {
 //                Toast.makeText(context, "already on the Screen", Toast.LENGTH_SHORT).show();
             }
@@ -103,4 +104,50 @@ public class Functions {
             Log.e(TAG, "copyFile IOException " + e.getMessage());
         }
     }
+
+    public static String getCurrentDate(){
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        String month_format = String.format("%02d", (mMonth + 1));
+        String day_format = String.format("%02d", mDay);
+        String year_format = String.format("%04d", mYear);
+
+        String today = month_format + "/" + day_format + "/" + year_format;
+        return today;
+    }
+
+    public static String getCurrentTime(){
+        final Calendar c = Calendar.getInstance();
+        final int mHour = c.get(Calendar.HOUR_OF_DAY);
+        final int mMinute = c.get(Calendar.MINUTE);
+
+        String hour_format = String.format("%02d", mHour);
+        String minute_format = String.format("%02d", mMinute);
+
+        String current_time = hour_format + ":" + minute_format;
+        return current_time;
+    }
+
+    public static Double getCurrentHour(){
+        final Calendar c = Calendar.getInstance();
+        final int mHour = c.get(Calendar.HOUR_OF_DAY);
+
+        String hour_format = String.format("%02d", mHour);
+
+        return Double.parseDouble(hour_format);
+    }
+
+    public static Double getCurrentMinute(){
+        final Calendar c = Calendar.getInstance();
+        final int mMinute = c.get(Calendar.MINUTE);
+
+        String minute_format = String.format("%02d", mMinute);
+
+        return Double.parseDouble(minute_format);
+    }
+
+
 }
