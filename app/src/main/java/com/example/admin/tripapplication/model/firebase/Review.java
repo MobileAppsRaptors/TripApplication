@@ -7,14 +7,32 @@ package com.example.admin.tripapplication.model.firebase;
 public class Review {
 
 
-    User reviewer;
+    String reviewer;
+    String reviewee;
     int rating;
     String data;
 
-    public Review(User reviewer, String data, int rating) {
+    public Review(String reviewer, String reviewee, int rating, String data) {
         this.reviewer = reviewer;
-        this.data = data;
+        this.reviewee = reviewee;
         this.rating = rating;
+        this.data = data;
+    }
+
+    public String getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public String getReviewee() {
+        return reviewee;
+    }
+
+    public void setReviewee(String reviewee) {
+        this.reviewee = reviewee;
     }
 
     public int getRating() {
@@ -23,14 +41,6 @@ public class Review {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public User getReviewer() {
-        return reviewer;
-    }
-
-    public void setReviewer(User reviewer) {
-        this.reviewer = reviewer;
     }
 
     public String getData() {
