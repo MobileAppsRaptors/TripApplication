@@ -11,10 +11,15 @@ public class CONSTANTS {
     //public static final String constant_example = "";
     //To call this CONSTANTS.constant_example;
 
+    //PlacesHelper Constants
     public static final String API_KEY = "AIzaSyAWtUVJsk4Ukxs6paYKrPiAmk2uVSdYlyA";
     public static final String URL_SCHEME = "https";
     public static final String GOOGLE_PLACES_HOST = "maps.googleapis.com";
     public static final String AUTOCOMPLETE_GOOGLEAPI_PATH = "maps/api/place/autocomplete/json";
+
+    //Tag constants
+    public static final String PRIVATE_TAG = "private";
+    public static final String PUBLIC_TAG = "public";
 
 
 

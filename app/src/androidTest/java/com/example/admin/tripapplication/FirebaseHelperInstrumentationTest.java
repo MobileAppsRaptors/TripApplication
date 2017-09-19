@@ -7,15 +7,14 @@ import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.model.firebase.Car;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
+import com.example.admin.tripapplication.model.firebase.UserBuilder;
 import com.example.admin.tripapplication.model.places.nearbyresult.Location;
-import com.example.admin.tripapplication.view.loginview.LoginView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.junit.After;
@@ -25,11 +24,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by Admin on 9/14/2017.
@@ -100,31 +96,12 @@ public class FirebaseHelperInstrumentationTest {
     }
 
     private void make_trip(){
-        location = new Location();
+        location = new Location(0.0, 0.0);
         location.setLat(80.0);
         location.setLat(20.0);
         date = new Date(10, 3, 3);
 
-        user = new User("manny"
-                , "sing"
-                , "12345"
-                , null
-                , null
-                , null
-                , 20
-                , "USA"
-                , "Georgia"
-                , "Atlanta"
-                , "77777"
-                , "444 wallaby way"
-                , "manny@nope.com"
-                , "M"
-                , "russian"
-                , new Car("ford", "pickup", "1203")
-                , (float) 2
-                , null
-                , null);
-
+        user = new UserBuilder().setFirst_name_tag("manny").setFirstName("sing").createUser();
         passengerList = new ArrayList<>();
         passengerList.add(user);
 
