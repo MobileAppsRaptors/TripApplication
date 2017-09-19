@@ -3,14 +3,17 @@ package com.example.admin.tripapplication.data;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
+import com.example.admin.tripapplication.model.firebase.UserBuilder;
 import com.example.admin.tripapplication.model.places.nearbyresult.Location;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -119,31 +122,34 @@ public class FirebaseHelper {
         });
     }
 
-    /*public ArrayList<Trip> GetTrips(String address, int radius){
-
-    }
-
-
-
-    public boolean AddNewUser(User user){
-        return false;
-    }
-
-    public User GetPublicUserData(){
-
-    }
-
-    public User GetPrivateUserData(){
-
-    }
+    //public User GetPublicUserData(){}
 
     public boolean UpdateUser(User user){
-        return false;
+        FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users").child(fb_user.getUid());
+
+        myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(!task.isSuccessful()){
+                    System.out.println(TAG + " UpdateUser failed " + task.getException());
+                }
+            }
+        });
+        return true;
     }
 
-    public boolean DeleteUser(User user){
-        return false;
-    }*/
+    public void AddUserReview(String user_id, Review review){
+
+    }
+
+    //TODO figure out how to deal with orphan trips and user data
+    public boolean DeleteMyUser(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.delete();
+        return true;
+    }
 
     private float degreesToRadians(float degrees) {
         return degrees * ((float)Math.PI) / 180;
