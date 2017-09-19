@@ -1,10 +1,8 @@
 package com.example.admin.tripapplication.data;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.admin.tripapplication.model.firebase.Car;
 import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
@@ -18,7 +16,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,15 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -150,6 +138,7 @@ public class FirebaseHelper {
             public void onComplete(@NonNull Task<Void> task) {
                 if(!task.isSuccessful()){
                     System.out.println(TAG + " UpdateUser failed " + task.getException());
+                    presenter.throwError(DatabaseError.fromException(task.getException()));
                 }
             }
         });
@@ -218,61 +207,22 @@ public class FirebaseHelper {
         //field, tag, setting
         // if tag null read field
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        Field[] fields = User.class.getDeclaredFields();
-        final User out_user = new UserBuilder().createUser();
-        final CountDownLatch latch = new CountDownLatch(fields.length);
-
-        for(Field field : fields){
-            //pls make new ref each time
-            DatabaseReference ref = database.getReference("users").child(user_id).child(field.getName());
-            final Field myField = field;
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    try {
-                        myField.set(out_user, dataSnapshot.getChildren());
-                        System.out.println(TAG + " got user data " + dataSnapshot.getChildren().toString());
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                    latch.countDown();
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    System.out.print(TAG + " Perfectly Normal:  " + databaseError.getMessage());
-                    latch.countDown();
-                }
-            });
-        }
-
-        try {
-            latch.await(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        presenter.parseUserData(out_user);
-    }
-
-    public void GetMyUserData(){
-        FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users").child(fb_user.getUid());
+        DatabaseReference myRef = database.getReference("users").child(user_id);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                presenter.parseUserData((User) dataSnapshot.getChildren());
+                User out_user = (User) dataSnapshot.getValue();
+                presenter.parseUserData(out_user);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println(TAG + " GetMyUserData read error " + databaseError.getMessage());
+                System.out.println(TAG + " GetUserData Failed" + databaseError.getMessage());
                 presenter.throwError(databaseError);
             }
         });
+
     }
 
     //TODO find way to deal with rating field
