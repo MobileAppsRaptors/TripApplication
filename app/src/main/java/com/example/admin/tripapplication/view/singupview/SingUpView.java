@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.admin.tripapplication.R;
@@ -47,10 +48,12 @@ public class SingUpView extends AppCompatActivity {
 
     @BindView(R.id.profile_image)
     CircleImageView profileImage;
-    @BindView(R.id.etFullName)
-    EditText etFullName;
-    @BindView(R.id.etGender)
-    EditText etGender;
+    @BindView(R.id.etName)
+    EditText etName;
+    @BindView(R.id.etLastName)
+    EditText etLastName;
+    @BindView(R.id.Gender)
+    RadioGroup Gender;
     @BindView(R.id.etAddress)
     EditText etAddress;
     @BindView(R.id.etCity)

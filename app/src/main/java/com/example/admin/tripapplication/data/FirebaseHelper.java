@@ -193,6 +193,57 @@ public class FirebaseHelper {
 
     }
 
+    public void AddImg(Uri uri, User user, String user_id){
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = mStorageRef.child(user_id + "images/" + uri.getLastPathSegment());
+
+        riversRef.putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        //TODO put a function to updateimgURL for user
+                        //updateImgURL(downloadUrl, user, user_id);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
+    }
+
+
+    //Not needed i think with updateImgURL is more than enough
+    public void DownloadImg(String img_key){
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = mStorageRef.child(img_key);
+
+        File localFile = null;
+        try {
+            localFile = File.createTempFile("images", "jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        riversRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        // Successfully downloaded data to local file
+                        // ...
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle failed download
+                // ...
+            }
+        });
+    }
+
     //TODO still needs testing
     public void GetTrip(String trip_id){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();

@@ -56,62 +56,93 @@
 
 
             <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorHint="#cccccc">
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="10dp"
+           android:textColorHint="#cccccc">
 
-                <EditText
-                    android:layout_weight="5"
+           <EditText
+               android:layout_weight="5"
 
-                    android:id="@+id/etFullName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#ffff"
-                    android:layout_marginRight="5dp"
-                    android:hint="   Full Name"
-                    android:inputType="text"
-                    android:textColor="#cccccc"
-                    android:textSize="20sp" />
-            </android.support.design.widget.TextInputLayout>
+               android:id="@+id/etName"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:backgroundTint="#ffff"
+               android:layout_marginRight="5dp"
+               android:hint="   Full Name"
+               android:inputType="text"
+               android:textColor="#cccccc"
+               android:textSize="20sp" />
+       </android.support.design.widget.TextInputLayout>
+
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="10dp"
+               android:textColorHint="#cccccc">
+
+               <EditText
+                   android:layout_weight="5"
+
+                   android:id="@+id/etLastName"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:backgroundTint="#ffff"
+                   android:layout_marginRight="5dp"
+                   android:hint="   Last Name"
+                   android:inputType="text"
+                   android:textColor="#cccccc"
+                   android:textSize="20sp" />
+           </android.support.design.widget.TextInputLayout>
 
            <RadioGroup
+               android:gravity="center_horizontal"
+               android:id="@+id/Gender"
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"
-               android:orientation="vertical">
-               <RadioButton android:id="@+id/radio_pirates"
+               android:orientation="horizontal">
+               <RadioButton
+                   android:textColor="@android:color/white"
+                   android:textSize="20sp"
+                   android:buttonTint="@android:color/white"
+                   android:paddingRight="25sp"
+                   android:id="@+id/rMale"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="@string/pirates"
+                   android:text="Male"
                    android:onClick="onRadioButtonClicked"/>
-               <RadioButton android:id="@+id/radio_ninjas"
+               <RadioButton
+                   android:textColor="@android:color/white"
+                   android:textSize="20sp"
+                   android:buttonTint="@android:color/white"
+                   android:id="@+id/rFemale"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="@string/ninjas"
+                   android:text="Female"
                    android:onClick="onRadioButtonClicked"/>
            </RadioGroup>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorHint="#cccccc">
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="10dp"
+               android:textColorHint="#cccccc">
 
-                <EditText
-                    android:layout_weight="5"
+               <EditText
+                   android:id="@+id/etAddress"
 
-                    android:id="@+id/etAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#ffff"
-                    android:layout_marginRight="5dp"
-                    android:hint="   Address"
-                    android:inputType="text"
-                    android:textColor="#cccccc"
-                    android:textSize="20sp" />
-            </android.support.design.widget.TextInputLayout>
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginRight="5dp"
+                   android:layout_weight="5"
+                   android:backgroundTint="#ffff"
+                   android:hint="   Address"
+                   android:inputType="text"
+                   android:textColor="#cccccc"
+                   android:textSize="20sp" />
+           </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+           <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
