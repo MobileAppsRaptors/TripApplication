@@ -22,10 +22,7 @@ public class TripPresenter implements TripContract.Presenter {
 
     @Override
     public void InsertTrip(Trip trip){
-        FirebaseHelper firebaseHelper = new FirebaseHelper();
-        boolean status = firebaseHelper.AddTrip(trip);
 
-        view.sendInsertStatus(status);
     }
 
 }
