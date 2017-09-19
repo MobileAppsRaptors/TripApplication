@@ -1,5 +1,6 @@
 package com.example.admin.tripapplication.data;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -9,6 +10,8 @@ import com.example.admin.tripapplication.model.places.nearbyresult.Location;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -16,7 +19,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -116,6 +125,57 @@ public class FirebaseHelper {
             public void onCancelled(DatabaseError databaseError) {}
 
             // ...
+        });
+    }
+
+    public void AddImg(Uri uri, User user, String user_id){
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = mStorageRef.child(user_id + "images/" + uri.getLastPathSegment());
+
+        riversRef.putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        //TODO put a function to updateimgURL for user
+                        //updateImgURL(downloadUrl, user, user_id);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
+    }
+
+
+    //Not needed i think with updateImgURL is more than enough
+    public void DownloadImg(String img_key){
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = mStorageRef.child(img_key);
+
+        File localFile = null;
+        try {
+            localFile = File.createTempFile("images", "jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        riversRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        // Successfully downloaded data to local file
+                        // ...
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle failed download
+                // ...
+            }
         });
     }
 

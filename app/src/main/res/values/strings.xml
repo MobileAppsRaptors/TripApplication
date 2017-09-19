@@ -5,6 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="facebook_app_id">350743785380244</string>
+    <string name="fb_login_protocol_scheme">67e256c41bc38a44a40898127517a3dc</string>
+
     <string-array name="values">
         <item>0</item>
         <item>1</item>

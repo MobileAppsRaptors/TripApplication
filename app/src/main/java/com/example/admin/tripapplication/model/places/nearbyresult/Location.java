@@ -18,6 +18,10 @@ public class Location {
         this.lng = lng;
     }
 
+    public Location(){
+
+    }
+
     public Double getLat() {
         return lat;
     }
