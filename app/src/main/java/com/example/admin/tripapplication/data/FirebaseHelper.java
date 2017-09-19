@@ -10,17 +10,19 @@ import com.example.admin.tripapplication.model.firebase.UserBuilder;
 import com.example.admin.tripapplication.model.places.nearbyresult.Location;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +33,11 @@ import java.util.concurrent.TimeUnit;
 public class FirebaseHelper {
 
     public static final String TAG = "FirebaseHelper";
+    FirebaseInterface presenter;
+
+    public FirebaseHelper(FirebaseInterface fbInterface){
+        this.presenter = fbInterface;
+    }
 
     public boolean AddTrip(Trip trip) {
         final CountDownLatch writeSignal = new CountDownLatch(1);
@@ -97,33 +104,30 @@ public class FirebaseHelper {
         });
     }
 
-    public void GetTrips(Location location, int radius){
+    //TODO still needs testing
+    public void AddUserReview(Review review){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("/trips/");
-        myRef.orderByKey().addChildEventListener(new ChildEventListener() {
+        DatabaseReference myRef = database.getReference("users").child(review.getReviewee()).child("review");
+
+        myRef.push();
+        String r_key = myRef.getKey();
+
+        myRef = database.getReference("review").child(review.getReviewer()).child(r_key);
+
+        myRef.setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                System.out.println(dataSnapshot.getKey());
+            public void onComplete(@NonNull Task<Void> task) {
+                if(!task.isSuccessful()){
+                    System.out.println(TAG + " AddUserReview Failed " + task.getException().getMessage());
+                    presenter.throwError(DatabaseError.fromException(task.getException()));
+                }
             }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-
-            // ...
         });
+
     }
 
-    //public User GetPublicUserData(){}
-
+    //TODO check if reviews and cars get overwritten
+    //TODO reviews need their own list
     public boolean UpdateUser(User user){
         FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -134,16 +138,94 @@ public class FirebaseHelper {
             public void onComplete(@NonNull Task<Void> task) {
                 if(!task.isSuccessful()){
                     System.out.println(TAG + " UpdateUser failed " + task.getException());
+                    presenter.throwError(DatabaseError.fromException(task.getException()));
                 }
             }
         });
         return true;
     }
 
-    public void AddUserReview(String user_id, Review review){
+    //TODO still needs testing
+    public void GetGeoTrips(Location location, float radius){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        GeoFire geoFire = new GeoFire(database.getReference("geofire"));
+
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLat(), location.getLng()), radius);
+
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                presenter.parseGeoFireTrip(key, location);
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+                System.out.println(TAG + " GetGeoTrip key no longer matches query" + key);
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+                System.out.println(TAG + " GetGeoTrip key is moved" + key);
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                System.out.println(TAG + " GetGeoTrip query is complete");
+                presenter.geoTripsFullyLoaded();
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+                System.out.println(TAG + " GetGeoTrip error" + error.getMessage());
+                presenter.throwError(error);
+            }
+        });
 
     }
 
+    //TODO still needs testing
+    public void GetTrip(String trip_id){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("trips/" + trip_id);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                presenter.parseTrip((Trip) dataSnapshot.getChildren());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println(TAG + " GetTrip read error " + databaseError.getMessage());
+                presenter.throwError(databaseError);
+            }
+        });
+    }
+
+    //TODO still needs testing
+    public void GetUserData(String user_id){
+        //field, tag, setting
+        // if tag null read field
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users").child(user_id);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User out_user = (User) dataSnapshot.getValue();
+                presenter.parseUserData(out_user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println(TAG + " GetUserData Failed" + databaseError.getMessage());
+                presenter.throwError(databaseError);
+            }
+        });
+
+    }
+
+    //TODO find way to deal with rating field
     //TODO figure out how to deal with orphan trips and user data
     public boolean DeleteMyUser(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
