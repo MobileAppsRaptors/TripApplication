@@ -1,29 +1,17 @@
 package com.example.admin.tripapplication.view.profileview;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.injection.profile.DaggerProfileComponent;
-import com.facebook.login.LoginManager;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProfileView extends Fragment {
@@ -36,7 +24,7 @@ public class ProfileView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_profile, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
