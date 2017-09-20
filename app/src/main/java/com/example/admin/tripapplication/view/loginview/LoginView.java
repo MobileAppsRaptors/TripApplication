@@ -382,15 +382,16 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
 
     @Override
     public void parseUserData(User user) {
+        Intent intent;
         if(user == null){
             Log.d(TAG, "parseUserData: ");
-            Intent intent = new Intent(this, SingUpView.class);
-            startActivity(intent);
+            intent = new Intent(this, SingUpView.class);
         } else {
             Log.d(TAG, "parseUserData: start drawerview");
-            Intent intent = new Intent(this, DrawerView.class);
-            startActivity(intent);
+            intent = new Intent(this, DrawerView.class);
         }
+        intent.putExtra(getString(R.string.user),user);
+        startActivity(intent);
     }
 
     @Override
@@ -403,4 +404,8 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
         Toast.makeText(getApplicationContext(), R.string.GET_USER_FAIL, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

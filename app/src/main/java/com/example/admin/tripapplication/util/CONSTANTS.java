@@ -18,6 +18,8 @@ public class CONSTANTS {
     public static final String AUTOCOMPLETE_GOOGLEAPI_PATH = "maps/api/place/autocomplete/json";
 
     //Tag constants
+    public static final String ADD_IMG_SUCC = "ADD_IMG_SUCC";
+    public static final String ADD_IMG_FAIL = "ADD_IMG_FAIL";
     public static final String ADD_USER_SUCC = "ADD_USER_SUCC";
     public static final String ADD_USER_FAIL = "ADD_USER_FAIL";
     public static final String GET_USER_SUCC = "GET_USER_SUCC";
@@ -51,5 +53,8 @@ public class CONSTANTS {
 
         classSubName.put("About","view.aboutview.AboutView");
         classSubName.put("AboutView","About");
+
+        classSubName.put("Profile","view.profileview.ProfileView");
+        classSubName.put("ProfileView","Profile");
     }
 }

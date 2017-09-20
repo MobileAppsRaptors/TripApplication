@@ -154,8 +154,23 @@ public class FirebaseHelper {
 
     //TODO check if reviews and cars get overwritten
     //TODO reviews need their own list
-    public boolean UpdateUser(User user){
+    public boolean UpdateUser(User user, Uri customImg) {
+
+        if(customImg == null)
+            UpdateUser(user);
+        else {
+            //First insert image img then that calls updateuser
+            FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
+            AddImg(user, customImg, fb_user.getUid());
+        }
+
+        return true;
+    }
+
+    public void UpdateUser(User user){
         FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
+
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users").child(fb_user.getUid());
 
@@ -166,11 +181,11 @@ public class FirebaseHelper {
                     System.out.println(TAG + " UpdateUser failed " + task.getException());
                     presenter.throwError(DatabaseError.fromException(task.getException()));
                 } else {
+
                     presenter.operationSuccess(ADD_USER_SUCC);
                 }
             }
         });
-        return true;
     }
 
     //TODO still needs testing
@@ -211,7 +226,7 @@ public class FirebaseHelper {
 
     }
 
-    public void AddImg(Uri uri, User user, String user_id){
+    public void AddImg(final User user, final Uri uri, final String user_id){
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         StorageReference riversRef = mStorageRef.child(user_id + "images/" + uri.getLastPathSegment());
 
@@ -222,7 +237,8 @@ public class FirebaseHelper {
                         // Get a URL to the uploaded content
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         //TODO put a function to updateimgURL for user
-                        //updateImgURL(downloadUrl, user, user_id);
+                        user.setImageURL(downloadUrl.toString());
+                        UpdateUser(user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -267,7 +283,7 @@ public class FirebaseHelper {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips/" + trip_id);
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 presenter.parseTrip((Trip) dataSnapshot.getChildren());
@@ -288,7 +304,7 @@ public class FirebaseHelper {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users").child(user_id);
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User out_user = dataSnapshot.getValue(User.class);
@@ -301,7 +317,6 @@ public class FirebaseHelper {
                 presenter.throwError(databaseError);
             }
         });
-
     }
 
     //TODO find way to deal with rating field

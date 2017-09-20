@@ -1,7 +1,5 @@
 package com.example.admin.tripapplication.model.firebase;
 
-import android.net.Uri;
-
 import java.net.URL;
 
 public class UserBuilder {
@@ -9,7 +7,7 @@ public class UserBuilder {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private Uri imageUri;
+    private String imageURL;
     private URL googleAcctLink;
     private URL fbAcctLink;
     private int age;
@@ -43,8 +41,8 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
+    public UserBuilder setImageUrl(String imageURL) {
+        this.imageURL = imageURL;
         return this;
     }
 
@@ -109,6 +107,6 @@ public class UserBuilder {
     }
 
     public User createUser() {
-        return new User(user_id, firstName, lastName, phoneNumber, imageUri, googleAcctLink, fbAcctLink, age, country, state, city, zip, address, email, sex, car, rating);
+        return new User(user_id, firstName, lastName, phoneNumber, imageURL, googleAcctLink, fbAcctLink, age, country, state, city, zip, address, email, sex, car, rating);
     }
 }

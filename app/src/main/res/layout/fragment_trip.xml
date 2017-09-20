@@ -151,10 +151,11 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:gravity="right"
-                app:layout_constraintBaseline_toBaselineOf="@+id/BtnDate"
-                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/BtnDate" />
+                android:layout_marginTop="6dp"
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                app:layout_constraintRight_toLeftOf="@+id/guideline" />
 
             <TextView
                 android:id="@+id/tvHour"
@@ -163,59 +164,61 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:gravity="right"
-                app:layout_constraintBaseline_toBaselineOf="@+id/BtnHour"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginRight="8dp"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintRight_toLeftOf="@+id/BtnHour"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvDate"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintRight_toLeftOf="@+id/guideline" />
+
+            <com.example.admin.tripapplication.util.BootstrapButtonIcon
+                android:id="@+id/BtnDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&#xf073; Date"
+                android:textStyle="bold"
+                app:bootstrapBrand="primary"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+                app:roundedCorners="true"
+                app:showOutline="false"
+                android:layout_marginRight="0dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvDate"
+                android:layout_marginLeft="0dp"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline" />
 
-            <com.beardedhen.androidbootstrap.BootstrapButton
+            <com.example.admin.tripapplication.util.BootstrapButtonIcon
                 android:id="@+id/BtnHour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="Hour"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="0dp"
+                android:text="&#xf017; Hour"
                 android:textStyle="bold"
                 app:bootstrapBrand="primary"
                 app:bootstrapSize="lg"
                 app:buttonMode="regular"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14"
                 app:roundedCorners="true"
                 app:showOutline="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp" />
-
-            <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/BtnDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:text="Date"
-                android:textStyle="bold"
-                app:bootstrapBrand="primary"
-                app:bootstrapSize="lg"
-                app:buttonMode="regular"
-                app:layout_constraintRight_toLeftOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/textView14"
-                app:roundedCorners="true"
-                app:showOutline="false"
-                android:layout_marginRight="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvHour"
+                android:layout_marginLeft="0dp"
+                app:layout_constraintLeft_toLeftOf="@+id/guideline"
+                app:layout_constraintHorizontal_bias="0.5" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5"
-                tools:layout_editor_absoluteY="295dp"
-                tools:layout_editor_absoluteX="384dp" />
+                app:layout_constraintGuide_percent="0.8" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
@@ -275,48 +278,10 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13"
                 app:sideItems="1"
-                app:values="@array/values" />
+                app:values="@array/values"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp" />
         </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cv4"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/white"
-        android:elevation="30sp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv3">
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:theme="@style/TextLabel"
-            android:touchscreenBlocksFocus="false"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvHour">
-
-            <EditText
-                android:id="@+id/tvDescription"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="top|left"
-                android:hint="Please write a brief description of your trip"
-                android:inputType="textMultiLine"
-                android:scrollbars="vertical"
-                android:textSize="20sp" />
-        </android.support.design.widget.TextInputLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -349,21 +314,12 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:inputType="numberDecimal"
-                android:text="0.00"
+                android:text="$0.00"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-            <TextView
-                android:id="@+id/textView17"
-                style="@style/dollar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$"
-                app:layout_constraintBottom_toBottomOf="@+id/etPrice"
-                app:layout_constraintRight_toLeftOf="@+id/etPrice"
-                app:layout_constraintTop_toTopOf="@+id/etPrice"
-                app:layout_constraintVertical_bias="0.444" />
+                app:layout_constraintTop_toBottomOf="@+id/textView16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp" />
 
             <TextView
                 android:id="@+id/textView16"
@@ -379,7 +335,7 @@
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
-    <Button
+    <com.example.admin.tripapplication.util.NormalButtonIcon
         android:id="@+id/btnSubmit"
         style="@style/ButtonSubmit"
         android:layout_width="0dp"
@@ -389,7 +345,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="Submit"
+        android:text="Submit  &#xf1d8;"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -397,5 +353,45 @@
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/cv5"
         app:layout_constraintVertical_bias="1.0" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv4"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/white"
+        android:elevation="30sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv3">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:theme="@style/TextLabel"
+            android:touchscreenBlocksFocus="false"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHour">
+
+            <EditText
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top|left"
+                android:hint="Please write a brief description of your trip"
+                android:inputType="textMultiLine"
+                android:scrollbars="vertical"
+                android:textSize="20sp" />
+        </android.support.design.widget.TextInputLayout>
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

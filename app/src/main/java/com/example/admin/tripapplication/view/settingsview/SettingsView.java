@@ -12,6 +12,8 @@ import com.example.admin.tripapplication.injection.settings.DaggerSettingsCompon
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+
 public class SettingsView extends Fragment {
 
     @Inject
@@ -26,6 +28,8 @@ public class SettingsView extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ButterKnife.bind(this, view);
 
         setupDaggerComponent();
     }

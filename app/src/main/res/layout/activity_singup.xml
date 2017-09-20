@@ -44,14 +44,39 @@
 
             <!--/>-->
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/profile_image"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:src="@drawable/ic_person_add"
-                app:civ_border_width="5dp"
-                app:civ_border_color="#ab0658"/>
+           <com.mikhaellopez.circularimageview.CircularImageView
+               android:id="@+id/profileImage"
+               android:layout_marginTop="5sp"
+               android:layout_gravity="center_horizontal"
+               android:layout_width="250dp"
+               android:layout_height="250dp"
+               android:src="@drawable/ic_person_add"
+               app:civ_shadow="true"
+               app:civ_shadow_radius="5"
+               app:civ_shadow_color="#000000"
+               app:civ_border_width="2dp"
+               app:civ_border_color="#ab0658"/>
+
+           <com.example.admin.tripapplication.util.BootstrapButtonIcon
+               android:id="@+id/btnErasePic"
+               android:layout_marginTop="5sp"
+               android:layout_gravity="right"
+               android:text="&#xf12d;  Erase Custom Picture"
+               android:elevation="3sp"
+               android:textStyle="bold"
+               app:bootstrapBrand="danger"
+               app:bootstrapSize="lg"
+               app:buttonMode="regular"
+               app:roundedCorners="true"
+               app:showOutline="false"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/ic_person_add"
+               app:civ_shadow="true"
+               app:civ_shadow_radius="15"
+               app:civ_shadow_color="#ffffff"
+               app:civ_border_width="4dp"
+               app:civ_border_color="#ab0658"/>
 
 
 
@@ -69,7 +94,7 @@
                android:layout_height="wrap_content"
                android:backgroundTint="#ffff"
                android:layout_marginRight="5dp"
-               android:hint="   Full Name"
+               android:hint="   Name (Required)"
                android:inputType="text"
                android:textColor="#cccccc"
                android:textSize="20sp" />
@@ -89,12 +114,21 @@
                    android:layout_height="wrap_content"
                    android:backgroundTint="#ffff"
                    android:layout_marginRight="5dp"
-                   android:hint="   Last Name"
+                   android:hint="   Last Name (Required)"
                    android:inputType="text"
                    android:textColor="#cccccc"
                    android:textSize="20sp" />
            </android.support.design.widget.TextInputLayout>
 
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginRight="5dp"
+               android:layout_marginLeft="5dp"
+               android:text="   Gender (Required)"
+               android:inputType="text"
+               style="InstructionText"
+               android:textColor="@color/colorAccent"/>
            <RadioGroup
                android:gravity="center_horizontal"
                android:id="@+id/Gender"
@@ -109,6 +143,7 @@
                    android:id="@+id/rMale"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:checked="true"
                    android:text="Male"/>
                <RadioButton
                    android:textColor="@android:color/white"
@@ -119,6 +154,46 @@
                    android:layout_height="wrap_content"
                    android:text="Female"/>
            </RadioGroup>
+
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="10dp"
+               android:textColorHint="#cccccc">
+
+               <EditText
+                   android:layout_weight="5"
+
+                   android:id="@+id/etPhoneNumber"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:backgroundTint="#ffff"
+                   android:layout_marginRight="5dp"
+                   android:hint="   Phone Number (Required)"
+                   android:inputType="numberDecimal"
+                   android:textColor="#cccccc"
+                   android:textSize="20sp" />
+           </android.support.design.widget.TextInputLayout>
+
+           <android.support.design.widget.TextInputLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="10dp"
+               android:textColorHint="#cccccc">
+
+               <EditText
+                   android:layout_weight="5"
+
+                   android:id="@+id/etEmail"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:backgroundTint="#ffff"
+                   android:layout_marginRight="5dp"
+                   android:hint="   Email"
+                   android:inputType="text"
+                   android:textColor="#cccccc"
+                   android:textSize="20sp" />
+           </android.support.design.widget.TextInputLayout>
 
            <android.support.design.widget.TextInputLayout
                android:layout_width="match_parent"
@@ -220,53 +295,12 @@
                     android:textSize="20sp" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorHint="#cccccc">
-
-                <EditText
-                    android:layout_weight="5"
-
-                    android:id="@+id/etEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#ffff"
-                    android:layout_marginRight="5dp"
-                    android:hint="   Email"
-                    android:inputType="text"
-                    android:textColor="#cccccc"
-                    android:textSize="20sp" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorHint="#cccccc">
-
-                <EditText
-                    android:layout_weight="5"
-
-                    android:id="@+id/etPhoneNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#ffff"
-                    android:layout_marginRight="5dp"
-                    android:hint="   Phone Number"
-                    android:inputType="numberDecimal"
-                    android:textColor="#cccccc"
-                    android:textSize="20sp" />
-            </android.support.design.widget.TextInputLayout>
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Button
+                <com.example.admin.tripapplication.util.NormalButtonIcon
                     android:id="@+id/btnCancel"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
@@ -274,10 +308,10 @@
                     android:layout_marginTop="30dp"
                     android:background="@drawable/roundborder"
                     android:layout_marginRight="5dp"
-                    android:text="Cancel"
+                    android:text="&#xf12d; Clean Fields"
                     android:textColor="#cccccc" />
 
-                <Button
+                <com.example.admin.tripapplication.util.NormalButtonIcon
                     android:id="@+id/btnSubmit"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
@@ -285,7 +319,7 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginLeft="5dp"
                     android:background="@drawable/roundborder"
-                    android:text="Submit"
+                    android:text="&#xf1d8; Submit"
                     android:textColor="#cccccc" />
 
             </LinearLayout>

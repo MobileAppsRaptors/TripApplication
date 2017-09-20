@@ -9,6 +9,12 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.admin.tripapplication.R;
+import com.example.admin.tripapplication.model.firebase.User;
+import com.facebook.Profile;
+import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -150,4 +156,15 @@ public class Functions {
     }
 
 
+    //GetImg from fb, google and firebase stored as string
+    public static String getImg(User user, FirebaseAuth mAuth) {
+        if(user != null && user.getImageURL() != null && !user.getImageURL().isEmpty()) {
+            return user.getImageURL();
+        } else if (Profile.getCurrentProfile() != null) {
+            return "https://graph.facebook.com/" + Profile.getCurrentProfile().getId() + "/picture?type=large";
+        } else if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getPhotoUrl() != null && !mAuth.getCurrentUser().getPhotoUrl().toString().isEmpty()) {
+            return mAuth.getCurrentUser().getPhotoUrl().toString();
+        }
+        return "";
+    }
 }

@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,15 +27,12 @@ import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.firebase.UserBuilder;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -46,9 +42,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.admin.tripapplication.util.CONSTANTS.ADD_USER_SUCC;
+import static com.example.admin.tripapplication.util.CONSTANTS.*;
+import static com.example.admin.tripapplication.util.Functions.*;
 
 public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     private static final String TAG = "SingUpView";
@@ -62,8 +58,8 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     private GoogleSignInAccount account;
     UserBuilder userBuilder = new UserBuilder();
 
-    @BindView(R.id.profile_image)
-    CircleImageView profileImage;
+    @BindView(R.id.profileImage)
+    CircularImageView profileImage;
     @BindView(R.id.etName)
     EditText etName;
     @BindView(R.id.etLastName)
@@ -89,7 +85,9 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     @Inject
     SingUpPresenter presenter;
-    private Bitmap selectedImage;
+    private Uri customImage;
+
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,35 +102,18 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
         setTitle("Register data");
 
         setupDaggerComponent();
-        mAuth = FirebaseAuth.getInstance();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        initFirebaseAuth();
 
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            String uid = user.getUid();
-        }
-        getImg();
     }
 
-    //TODO set user image with firebase
-    private void getImg() {
-        //Image from fb
-        if (Profile.getCurrentProfile() != null) {
-            Picasso.with(this).load("https://graph.facebook.com/" + Profile.getCurrentProfile().getId() + "/picture?type=large").into(profileImage);
-        } else if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getPhotoUrl() != null && !mAuth.getCurrentUser().getPhotoUrl().toString().isEmpty()) {
-            Picasso.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(profileImage);
-        } else{
-            profileImage.setImageResource(R.drawable.ic_person_add);
-        }
+    private void initFirebaseAuth() {
+        mAuth = FirebaseAuth.getInstance();
 
+        AddImgCircle();
+
+        Intent intent = getIntent();
+        user = intent.getParcelableExtra("user");
     }
 
     private void setupDaggerComponent() {
@@ -166,13 +147,17 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent startMain = new Intent(Intent.ACTION_MAIN);
-        startMain.addCategory(Intent.CATEGORY_HOME);
-        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startMain);
+        mAuth.signOut();
+        LoginManager.getInstance().logOut();
+        Toast.makeText(this, "Sign out successfully", Toast.LENGTH_SHORT).show();
+        finish();
+//        Intent startMain = new Intent(Intent.ACTION_MAIN);
+//        startMain.addCategory(Intent.CATEGORY_HOME);
+//        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(startMain);
     }
 
-    @OnClick({R.id.btnCancel, R.id.btnSubmit})
+    @OnClick({R.id.btnCancel, R.id.btnSubmit, R.id.btnErasePic})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnCancel:
@@ -186,6 +171,12 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
                 etPhoneNumber.setText("");
                 Toast.makeText(getApplicationContext(), R.string.SIGN_UP_CANCEL, Toast.LENGTH_SHORT).show();
                 //TODO maybe start splash again
+                if(user != null) {
+                    user.setImageURL("");
+                }
+                customImage = null;
+                AddImgCircle();
+
                 break;
             case R.id.btnSubmit:
                 final FirebaseHelper fbHelper = new FirebaseHelper(this);
@@ -209,13 +200,51 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
                         userBuilder.setSex(rFemale.getText().toString());
                         break;
                 }
-                User user = userBuilder.createUser();
-                fbHelper.UpdateUser(user);
+
+                //Validations before continue
+                String error = "";
+                if(etName.getText().toString().isEmpty()) {
+                    error += " Name,";
+                    etName.setError("Name Required");
+                }
+                if(etLastName.getText().toString().isEmpty()) {
+                    error += " Last Name,";
+                    etLastName.setError("Last Name Required");
+                }
+                if(etPhoneNumber.getText().toString().isEmpty()) {
+                    error += " Name,";
+                    etPhoneNumber.setError("Phone Required");
+                }
+                if(!error.isEmpty()) {
+                    error = error.substring(0,error.length()-1);
+                    Toast.makeText(this, "You need to fill the fields: " + error, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+                User user_new = userBuilder.createUser();
+
+                fbHelper.UpdateUser(user_new,customImage);
+                break;
+            case R.id.btnErasePic:
+                if(user != null) {
+                    user.setImageURL("");
+                }
+                customImage = null;
+                AddImgCircle();
+
                 break;
         }
     }
 
-    @OnClick(R.id.profile_image)
+    private void AddImgCircle() {
+        String img = getImg(user, mAuth);
+        if(img.isEmpty())
+            profileImage.setImageResource(R.drawable.ic_person_add);
+        else
+            Picasso.with(getApplicationContext()).load(img).into(profileImage);
+    }
+
+    @OnClick(R.id.profileImage)
     public void onViewClicked() {
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
@@ -234,12 +263,12 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE) {
             if (resultCode == Activity.RESULT_OK && data.getData() != null) {
-                Uri uri = data.getData();
+                customImage = data.getData();
                 try {
-                    selectedImage = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), customImage);
 
-                    Log.d(TAG, "onActivityResult: " + uri.getPath());
-                    profileImage.setImageBitmap(selectedImage);
+                    Log.d(TAG, "onActivityResult: " + customImage.getPath());
+                    profileImage.setImageBitmap(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -276,6 +305,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     public void operationSuccess(String operation) {
         if (operation.equals(ADD_USER_SUCC)){
             Toast.makeText(getApplicationContext(), R.string.ADD_USER_SUCC, Toast.LENGTH_SHORT).show();
+            finish();
         }
 
     }

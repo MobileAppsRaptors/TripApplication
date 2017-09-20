@@ -7,6 +7,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.wefika.horizontalpicker.HorizontalPicker;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,6 +92,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
     BootstrapButton COrigin;
     private boolean stop_duplicate_call = false;
     private FirebaseHelper fbHelper;
+    private TextWatcher tt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,7 +101,60 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         View view = inflater.inflate(R.layout.fragment_trip, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        TextMoneyFormat();
+
         return view;
+    }
+
+    private void TextMoneyFormat() {
+        tt = new TextWatcher() {
+            public void afterTextChanged(Editable s){}
+            public void beforeTextChanged(CharSequence s,int start,int count, int after){}
+            private String current = "";
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!s.toString().equals(current)){
+                    etPrice.removeTextChangedListener(this);
+
+                    String cleanString = s.toString().replaceAll("[$,.]", "");
+
+                    double parsed = Double.parseDouble(cleanString);
+                    String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
+
+                    current = formatted;
+                    etPrice.setText(formatted);
+                    etPrice.setSelection(formatted.length());
+
+                    etPrice.addTextChangedListener(this);
+                }
+            }
+        };
+        etPrice.setCursorVisible(false);
+        etPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                try {
+                    if (hasFocus) {
+                        etPrice.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                etPrice.setSelection(etPrice.getText().length());
+                                etPrice.setCursorVisible(true);
+                            }
+                        });
+                    } else {
+                        etPrice.setCursorVisible(false);
+                    }
+                }catch(Exception ex){}
+            }
+        });
+        etPrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etPrice.setSelection(etPrice.getText().length());
+            }
+        });
+        etPrice.setSelection(etPrice.getText().length());
+        etPrice.addTextChangedListener(tt);
     }
 
     @Override
@@ -123,9 +180,10 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         unbinder.unbind();
     }
 
-    @OnClick({R.id.CDestination, R.id.COrigin, R.id.btnSubmit})
+    @OnClick({R.id.CDestination, R.id.tvDestination, R.id.COrigin , R.id.tvOrigin, R.id.btnSubmit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tvOrigin:
             case R.id.COrigin:
                 if(!stop_duplicate_call) {
                     stop_duplicate_call = true;
@@ -144,6 +202,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
                     }
                 }
                 break;
+            case R.id.tvDestination:
             case R.id.CDestination:
                 if(!stop_duplicate_call) {
                     stop_duplicate_call = true;
@@ -178,22 +237,30 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         }
 
         double leniancy = 2;
-        //TODO need implementation of user still
         int seats = Seats.getSelectedItem();
-        float cost = Float.parseFloat(etPrice.getText().toString());
+        float cost = Float.parseFloat(etPrice.getText().toString().replace("$",""));
         Map<String, User> passengerList = new HashMap<>();
 
         String error = "";
-        if(origin == null)
+        if(origin == null) {
             error += " origin,";
-        if(destination == null)
+            tvOrigin.setError("Origin required");
+        }
+        if(destination == null) {
             error += " destination,";
-        if(tvDate.getText().toString().isEmpty())
+            tvDestination.setError("Destination required");
+        }
+        if(tvDate.getText().toString().isEmpty()) {
             error += " date,";
-        if(tvHour.getText().toString().isEmpty())
+            tvDate.setError("Date Required");
+        }
+        if(tvHour.getText().toString().isEmpty()) {
             error += " hour,";
+            tvHour.setError("Hour required");
+        }
 
         if(!error.isEmpty()) {
+            error = error.substring(0,error.length()-1);
             Toast.makeText(getContext(), "You need to fill the fields: " + error, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -212,10 +279,11 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         fbHelper.AddTrip(trip);
     }
 
-    @OnClick({R.id.BtnDate, R.id.BtnHour})
+    @OnClick({R.id.BtnDate, R.id.tvDate, R.id.BtnHour, R.id.tvHour})
     public void onDateClicked(View view) {
         final Calendar c = Calendar.getInstance();
         switch (view.getId()) {
+            case R.id.tvDate:
             case R.id.BtnDate:
                 int mYear = c.get(Calendar.YEAR);
                 int mMonth = c.get(Calendar.MONTH);
@@ -253,6 +321,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
                 datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
                 datePickerDialog.show();
                 break;
+            case R.id.tvHour:
             case R.id.BtnHour:
                 // Get Current Time
                 final int mHour = c.get(Calendar.HOUR_OF_DAY);

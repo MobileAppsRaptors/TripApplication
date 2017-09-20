@@ -1,22 +1,22 @@
 package com.example.admin.tripapplication.model.firebase;
 
-import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Admin on 9/13/2017.
  */
 
-public class User {
+public class User implements Parcelable {
 
     String user_id;
     String firstName;
     String lastName;
     String phoneNumber;
-    Uri imageUri;
+    String imageURL;
     URL googleAcctLink;
     URL fbAcctLink;
     int age;
@@ -34,12 +34,12 @@ public class User {
 
     public User(){}
 
-    public User(String user_id, String firstName, String lastName, String phoneNumber, Uri imageUri, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, Car car, float rating) {
+    public User(String user_id, String firstName, String lastName, String phoneNumber, String imageURL, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, Car car, float rating){
         this.user_id = user_id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.imageUri = imageUri;
+        this.imageURL = imageURL;
         this.googleAcctLink = googleAcctLink;
         this.fbAcctLink = fbAcctLink;
         this.age = age;
@@ -52,9 +52,81 @@ public class User {
         this.sex = sex;
         this.car = car;
         this.rating = rating;
-        this.review = null;
-        this.tripList = null;
     }
+
+    public User(String user_id, String firstName, String lastName, String phoneNumber, String imageURL, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, Car car, float rating, Map<String, Review> review, Map<String, Trip> tripList) {
+        this.user_id = user_id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.imageURL = imageURL;
+        this.googleAcctLink = googleAcctLink;
+        this.fbAcctLink = fbAcctLink;
+        this.age = age;
+        this.country = country;
+        this.state = state;
+        this.city = city;
+        this.zip = zip;
+        this.address = address;
+        this.email = email;
+        this.sex = sex;
+        this.car = car;
+        this.rating = rating;
+        this.review = review;
+        this.tripList = tripList;
+    }
+
+    protected User(Parcel in) {
+        user_id = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+        phoneNumber = in.readString();
+        imageURL = in.readString();
+        age = in.readInt();
+        country = in.readString();
+        state = in.readString();
+        city = in.readString();
+        zip = in.readString();
+        address = in.readString();
+        email = in.readString();
+        sex = in.readString();
+        rating = in.readFloat();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(user_id);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(phoneNumber);
+        dest.writeString(imageURL);
+        dest.writeInt(age);
+        dest.writeString(country);
+        dest.writeString(state);
+        dest.writeString(city);
+        dest.writeString(zip);
+        dest.writeString(address);
+        dest.writeString(email);
+        dest.writeString(sex);
+        dest.writeFloat(rating);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getUser_id() {
         return user_id;
@@ -88,12 +160,12 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Uri getImageUri() {
-        return imageUri;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public URL getGoogleAcctLink() {

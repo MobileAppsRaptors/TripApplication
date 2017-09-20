@@ -105,7 +105,7 @@ public class FirebaseHelperInstrumentationTest {
         passengerList = new ArrayList<>();
         passengerList.add(user);
 
-        trip = new Trip(location, location, date, 10.0, user, 4, (float) 20.00, passengerList);
+        //trip = new Trip(location, location, date, 10.0, user, 4, (float) 20.00, passengerList);
 
     }
 
