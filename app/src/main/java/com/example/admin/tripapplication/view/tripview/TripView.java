@@ -20,15 +20,20 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.example.admin.tripapplication.R;
+import com.example.admin.tripapplication.data.FirebaseHelper;
+import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.injection.trip.DaggerTripComponent;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.places.nearbyresult.Location;
 import com.example.admin.tripapplication.util.Functions;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.wefika.horizontalpicker.HorizontalPicker;
 
 import java.text.ParseException;
@@ -36,7 +41,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -46,9 +53,10 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.admin.tripapplication.util.CONSTANTS.ADD_TRIP_SUCC;
 import static com.example.admin.tripapplication.util.Functions.*;
 
-public class TripView extends Fragment implements TripContract.View {
+public class TripView extends Fragment implements TripContract.View, FirebaseInterface {
 
     private static final int REQUEST_PLACE_ORIGIN = 1;
     private static final int REQUEST_PLACE_DESTINATION = 2;
@@ -80,6 +88,7 @@ public class TripView extends Fragment implements TripContract.View {
     @BindView(R.id.COrigin)
     BootstrapButton COrigin;
     private boolean stop_duplicate_call = false;
+    private FirebaseHelper fbHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,13 +163,13 @@ public class TripView extends Fragment implements TripContract.View {
                 }
                 break;
             case R.id.btnSubmit:
-                CollectDataToInsert();
-
+                fbHelper = new FirebaseHelper(this);
+                fbHelper.GetUserData(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 break;
         }
     }
 
-    private void CollectDataToInsert() {
+    private void CollectDataToInsert(User myUser) {
         Date date = null;
         try {
             date = new SimpleDateFormat("mm/dd/yyyy HH:mm").parse(tvDate.getText().toString() + " " + tvHour.getText().toString());
@@ -169,10 +178,10 @@ public class TripView extends Fragment implements TripContract.View {
         }
 
         double leniancy = 2;
-        User user = null;  //TODO need implementation of user still
+        //TODO need implementation of user still
         int seats = Seats.getSelectedItem();
         float cost = Float.parseFloat(etPrice.getText().toString());
-        List<User> passengerList = new ArrayList<>();
+        Map<String, User> passengerList = new HashMap<>();
 
         String error = "";
         if(origin == null)
@@ -194,12 +203,13 @@ public class TripView extends Fragment implements TripContract.View {
                 destination,
                 date,
                 leniancy,
-                user,
+                myUser,
                 seats,
                 cost,
                 passengerList
         );
-        presenter.InsertTrip(trip);
+        Log.d(TAG, "CollectDataToInsert: Calling FBhelper");
+        fbHelper.AddTrip(trip);
     }
 
     @OnClick({R.id.BtnDate, R.id.BtnHour})
@@ -316,6 +326,41 @@ public class TripView extends Fragment implements TripContract.View {
         String status_string = (status) ? "successfully" : "unsuccessfully";
 
         Toast.makeText(getContext(), "Your insert was " + status_string, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void parseTrip(Trip trip) {
+
+    }
+
+    @Override
+    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation) {
+
+    }
+
+    @Override
+    public void geoTripsFullyLoaded() {
+
+    }
+
+    @Override
+    public void parseUserData(User user) {
+        if(user != null){
+            CollectDataToInsert(user);
+        }
+    }
+
+    @Override
+    public void throwError(DatabaseError error) {
+        Toast.makeText(getContext(), "Database Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void operationSuccess(String operation) {
+        if(operation.equals(ADD_TRIP_SUCC)){
+            Toast.makeText(getContext(), R.string.ADD_TRIP_SUCC, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     //TODO get specified trip from database

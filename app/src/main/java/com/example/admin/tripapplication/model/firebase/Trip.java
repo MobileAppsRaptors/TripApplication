@@ -5,6 +5,7 @@ import com.example.admin.tripapplication.model.places.nearbyresult.Location;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Admin on 9/13/2017.
@@ -19,9 +20,11 @@ public class Trip {
     User creator;
     int seats;
     float cost;
-    List<User> passengerList;
+    Map<String, User> passengerList;
 
-    public Trip(Location origin, Location destination, Date date, double leniancy, User creator, int seats, float cost, List<User> passengerList) {
+    public Trip(){};
+
+    public Trip(Location origin, Location destination, Date date, double leniancy, User creator, int seats, float cost, Map<String, User> passengerList) {
         this.origin = origin;
         this.destination = destination;
         this.date = date;
@@ -88,11 +91,11 @@ public class Trip {
         this.cost = cost;
     }
 
-    public List<User> getPassengerList() {
+    public Map<String, User> getPassengerList() {
         return passengerList;
     }
 
-    public void setPassengerList(List<User> passengerList) {
+    public void setPassengerList(Map<String, User> passengerList) {
         this.passengerList = passengerList;
     }
 }

@@ -3,7 +3,6 @@ package com.example.admin.tripapplication.model.firebase;
 import android.net.Uri;
 
 import java.net.URL;
-import java.util.List;
 
 public class UserBuilder {
     private String user_id;
@@ -23,8 +22,6 @@ public class UserBuilder {
     private String sex;
     private Car car;
     private float rating;
-    private List<Review> review;
-    private List<Trip> tripList;
 
     public UserBuilder setUser_id(String user_id) {
         this.user_id = user_id;
@@ -111,19 +108,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setReview(List<Review> review) {
-        this.review = review;
-        return this;
-    }
-
-    public UserBuilder setTripList(List<Trip> tripList) {
-        this.tripList = tripList;
-        return this;
-    }
-
     public User createUser() {
-        return new User(user_id, firstName, lastName, phoneNumber, imageUri, googleAcctLink, fbAcctLink, age, country, state, city, zip, address, email, sex, car, rating, review, tripList);
+        return new User(user_id, firstName, lastName, phoneNumber, imageUri, googleAcctLink, fbAcctLink, age, country, state, city, zip, address, email, sex, car, rating);
     }
-
-    public UserBuilder(){}
 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.model.firebase.Trip;
 
-public class TripPresenter implements TripContract.Presenter {
+public class TripPresenter implements TripContract.Presenter{
     TripContract.View view;
     private static final String TAG = "TripActivityPresenter";
     private Context context;

@@ -124,16 +124,10 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     //TODO set user image with firebase
     private void getImg() {
-        Intent intent = getIntent();
-        account = (GoogleSignInAccount) intent.getExtras().get("google");
         //Image from fb
         if (Profile.getCurrentProfile() != null) {
             Log.i(TAG, "getImg: " + "graph.facebook.com/" + Profile.getCurrentProfile().getId() + "/picture?type=large");
             Picasso.with(this).load("https://graph.facebook.com/" + Profile.getCurrentProfile().getId() + "/picture?type=large").into(profileImage);
-        } else if (account != null) {
-            Log.i(TAG, "getImg: " + account.getPhotoUrl());
-            Picasso.with(this).load(account.getPhotoUrl()).into(profileImage);
-
         }
 
     }
@@ -278,7 +272,9 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     @Override
     public void operationSuccess(String operation) {
-        if (operation.equals(ADD_USER_SUCC))
+        if (operation.equals(ADD_USER_SUCC)){
             Toast.makeText(getApplicationContext(), R.string.ADD_USER_SUCC, Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
