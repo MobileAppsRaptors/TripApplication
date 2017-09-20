@@ -12,6 +12,8 @@ public class Review {
     int rating;
     String data;
 
+    public Review(){}
+
     public Review(String reviewer, String reviewee, int rating, String data) {
         this.reviewer = reviewer;
         this.reviewee = reviewee;

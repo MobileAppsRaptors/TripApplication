@@ -28,6 +28,7 @@ import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.firebase.UserBuilder;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -90,7 +91,6 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     SingUpPresenter presenter;
     private Bitmap selectedImage;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,16 +124,13 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     //TODO set user image with firebase
     private void getImg() {
-        Intent intent = getIntent();
-        account = (GoogleSignInAccount) intent.getExtras().get("google");
         //Image from fb
         if (Profile.getCurrentProfile() != null) {
-            Log.i(TAG, "getImg: " + "graph.facebook.com/" + Profile.getCurrentProfile().getId() + "/picture?type=large");
             Picasso.with(this).load("https://graph.facebook.com/" + Profile.getCurrentProfile().getId() + "/picture?type=large").into(profileImage);
-        } else if (account != null) {
-            Log.i(TAG, "getImg: " + account.getPhotoUrl());
-            Picasso.with(this).load(account.getPhotoUrl()).into(profileImage);
-
+        } else if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getPhotoUrl() != null && !mAuth.getCurrentUser().getPhotoUrl().toString().isEmpty()) {
+            Picasso.with(this).load(mAuth.getCurrentUser().getPhotoUrl()).into(profileImage);
+        } else{
+            profileImage.setImageResource(R.drawable.ic_person_add);
         }
 
     }
@@ -174,7 +171,6 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
     }
-
 
     @OnClick({R.id.btnCancel, R.id.btnSubmit})
     public void onViewClicked(View view) {
@@ -278,7 +274,9 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     @Override
     public void operationSuccess(String operation) {
-        if (operation.equals(ADD_USER_SUCC))
+        if (operation.equals(ADD_USER_SUCC)){
             Toast.makeText(getApplicationContext(), R.string.ADD_USER_SUCC, Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

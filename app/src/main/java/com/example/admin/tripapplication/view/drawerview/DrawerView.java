@@ -12,11 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.injection.drawer.DaggerDrawerComponent;
 import com.example.admin.tripapplication.view.homeview.HomeView;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
 
@@ -109,6 +112,10 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
 
         switch (id) {
             case R.id.log_out:
+                FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
+                Toast.makeText(this, "Sign out successfully", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

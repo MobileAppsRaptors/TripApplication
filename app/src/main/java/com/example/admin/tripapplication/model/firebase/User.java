@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Admin on 9/13/2017.
@@ -28,10 +29,12 @@ public class User {
     String sex;
     Car car;
     float rating;
-    List<Review> review;
-    List<Trip> tripList;
+    Map<String, Review> review;
+    Map<String, Trip> tripList;
 
-    public User(String user_id, String firstName, String lastName, String phoneNumber, Uri imageUri, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, Car car, float rating, List<Review> review, List<Trip> tripList) {
+    public User(){}
+
+    public User(String user_id, String firstName, String lastName, String phoneNumber, Uri imageUri, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, Car car, float rating) {
         this.user_id = user_id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -49,8 +52,8 @@ public class User {
         this.sex = sex;
         this.car = car;
         this.rating = rating;
-        this.review = review;
-        this.tripList = tripList;
+        this.review = null;
+        this.tripList = null;
     }
 
     public String getUser_id() {
@@ -189,19 +192,19 @@ public class User {
         this.rating = rating;
     }
 
-    public List<Review> getReview() {
+    public Map<String, Review> getReview() {
         return review;
     }
 
-    public void setReview(List<Review> review) {
+    public void setReview(Map<String, Review> review) {
         this.review = review;
     }
 
-    public List<Trip> getTripList() {
+    public Map<String, Trip> getTripList() {
         return tripList;
     }
 
-    public void setTripList(List<Trip> tripList) {
+    public void setTripList(Map<String, Trip> tripList) {
         this.tripList = tripList;
     }
 }

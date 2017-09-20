@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TripApplication</string>
+    <string name="app_name">TriApp</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -10,7 +10,10 @@
 
     <string name="ADD_USER_SUCC">add data success!</string>
     <string name="ADD_USER_FAIL">add data failed</string>
+    <string name="GET_USER_SUCC">got user data!</string>
+    <string name="GET_USER_FAIL">user not found</string>
     <string name="SIGN_UP_CANCEL">sign up canceled</string>
+    <string name="ADD_TRIP_SUCC">trip added successfuly!</string>
 
     <string-array name="values">
         <item>0</item>
