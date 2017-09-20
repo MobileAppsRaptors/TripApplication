@@ -65,26 +65,24 @@ public class FirebaseHelper {
 
                     @Override
                     public void onComplete(@NonNull final Task<Void> task) {
-                        writeSignal.countDown();
+                        if (!task.isSuccessful()) {
+                            System.out.println(TAG + "Trip add Failed");
+                        } else {
+                            System.out.println(TAG + "Trip Added");
+                        }
                     }
                 });
 
-        AddGeoFire(trip_key, trip.getOrigin(), "origin");
-        AddGeoFire(trip_key, trip.getDestination(), "destination");
+
 
         AddTripUser(trip_key, trip);
-
-        try {
-            writeSignal.await(10, TimeUnit.SECONDS);
-        }catch(Exception ex){}
-        System.out.println(TAG + "Wrote data");
 
         return true;
     }
 
-    private void AddTripUser(String trip_key, Trip trip) {
+    private void AddTripUser(final String trip_key, final Trip trip) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/trips");
+        DatabaseReference myRef = database.getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/tripList");
 
         myRef.push();
 
@@ -95,22 +93,38 @@ public class FirebaseHelper {
 
                     @Override
                     public void onComplete(@NonNull final Task<Void> task) {
-                        if (!task.isSuccessful())
+                        if (!task.isSuccessful()) {
                             Log.d(TAG, "onComplete:  Error inside addtripuser" + task.getException().getMessage());
+                            presenter.throwError(DatabaseError.fromException(task.getException()));
+                        } else {
+                            AddGeoFire(trip_key, trip.getOrigin(), trip.getDestination());
+                        }
                     }
                 });
     }
 
-    private void AddGeoFire(String trip_key, Location location, String source) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("trips/geofire/" + source);
-        GeoFire geoFire = new GeoFire(ref);
-        geoFire.setLocation(trip_key, new GeoLocation(location.getLat(),location.getLng()), new GeoFire.CompletionListener() {
+    private void AddGeoFire(final String trip_key, Location origin, final Location destination) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("geofire/destination");
+        final GeoFire geoFire = new GeoFire(ref);
+        geoFire.setLocation(trip_key, new GeoLocation(origin.getLat(),origin.getLng()), new GeoFire.CompletionListener() {
             @Override
             public void onComplete(String key, DatabaseError error) {
                 if (error != null) {
                     System.err.println("There was an error saving the location to GeoFire: " + error);
+                    presenter.throwError(error);
                 } else {
                     System.out.println("Location saved on server successfully!" + key);
+                    geoFire.setLocation(trip_key, new GeoLocation(destination.getLat(), destination.getLng()), new GeoFire.CompletionListener() {
+                        @Override
+                        public void onComplete(String key, DatabaseError error) {
+                            if(error != null){
+                                System.err.println("There was an error saving the location to GeoFire: " + error);
+                                presenter.throwError(error);
+                            } else {
+                                presenter.operationSuccess(ADD_TRIP_SUCC);
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -162,7 +176,7 @@ public class FirebaseHelper {
     //TODO still needs testing
     public void GetGeoTrips(Location location, float radius){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        GeoFire geoFire = new GeoFire(database.getReference("geofire"));
+        GeoFire geoFire = new GeoFire(database.getReference("geofire/destination"));
 
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLat(), location.getLng()), radius);
 

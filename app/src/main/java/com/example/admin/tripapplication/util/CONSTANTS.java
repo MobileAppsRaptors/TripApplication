@@ -22,6 +22,8 @@ public class CONSTANTS {
     public static final String ADD_USER_FAIL = "ADD_USER_FAIL";
     public static final String GET_USER_SUCC = "GET_USER_SUCC";
     public static final String GET_USER_FAIL = "GET_USER_FAIL";
+    public static final String ADD_TRIP_SUCC = "ADD_TRIP_SUCC";
+    public static final String GET_TRIP_FAIL = "GET_TRIP_FAIL";
     public static final String SIGN_UP_CANCEL = "SIGN_UP_CANCEL";
 
 

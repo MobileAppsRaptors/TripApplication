@@ -13,6 +13,7 @@
     <string name="GET_USER_SUCC">got user data!</string>
     <string name="GET_USER_FAIL">user not found</string>
     <string name="SIGN_UP_CANCEL">sign up canceled</string>
+    <string name="ADD_TRIP_SUCC">trip added successfuly!</string>
 
     <string-array name="values">
         <item>0</item>

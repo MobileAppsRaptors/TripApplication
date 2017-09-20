@@ -336,6 +336,7 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
         }
     }
 
+    //TODO add progress bar
     private void updateUI(FirebaseUser currentUser) {
         fbHelper.GetUserData(currentUser.getUid());
     }
