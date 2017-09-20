@@ -36,6 +36,8 @@ import java.lang.reflect.Field;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static com.example.admin.tripapplication.util.CONSTANTS.*;
+
 /**
  * Created by Admin on 9/12/2017.
  */
@@ -149,6 +151,8 @@ public class FirebaseHelper {
                 if(!task.isSuccessful()){
                     System.out.println(TAG + " UpdateUser failed " + task.getException());
                     presenter.throwError(DatabaseError.fromException(task.getException()));
+                } else {
+                    presenter.operationSuccess(ADD_USER_SUCC);
                 }
             }
         });
