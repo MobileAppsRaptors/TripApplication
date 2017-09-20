@@ -8,6 +8,10 @@
     <string name="facebook_app_id">350743785380244</string>
     <string name="fb_login_protocol_scheme">67e256c41bc38a44a40898127517a3dc</string>
 
+    <string name="ADD_USER_SUCC">add data success!</string>
+    <string name="ADD_USER_FAIL">add data failed</string>
+    <string name="SIGN_UP_CANCEL">sign up canceled</string>
+
     <string-array name="values">
         <item>0</item>
         <item>1</item>

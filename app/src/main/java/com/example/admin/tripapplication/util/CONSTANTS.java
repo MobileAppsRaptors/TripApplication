@@ -18,8 +18,9 @@ public class CONSTANTS {
     public static final String AUTOCOMPLETE_GOOGLEAPI_PATH = "maps/api/place/autocomplete/json";
 
     //Tag constants
-    public static final String PRIVATE_TAG = "private";
-    public static final String PUBLIC_TAG = "public";
+    public static final String ADD_USER_SUCC = "ADD_USER_SUCC";
+    public static final String ADD_USER_FAIL = "ADD_USER_FAIL";
+    public static final String SIGN_UP_CANCEL = "SIGN_UP_CANCEL";
 
 
 

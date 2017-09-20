@@ -18,4 +18,5 @@ public interface FirebaseInterface {
     void geoTripsFullyLoaded();
     void parseUserData(User user);
     void throwError(DatabaseError error);
+    void operationSuccess(String operation);
 }

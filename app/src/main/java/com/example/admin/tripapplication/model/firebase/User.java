@@ -12,7 +12,8 @@ import java.util.List;
 public class User {
 
     String user_id;
-    String name;
+    String firstName;
+    String lastName;
     String phoneNumber;
     Uri imageUri;
     URL googleAcctLink;
@@ -30,9 +31,10 @@ public class User {
     List<Review> review;
     List<Trip> tripList;
 
-    public User(String user_id, String name, String phoneNumber, Uri imageUri, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, Car car, float rating, List<Review> review, List<Trip> tripList) {
+    public User(String user_id, String firstName, String lastName, String phoneNumber, Uri imageUri, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, Car car, float rating, List<Review> review, List<Trip> tripList) {
         this.user_id = user_id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.imageUri = imageUri;
         this.googleAcctLink = googleAcctLink;
@@ -59,12 +61,20 @@ public class User {
         this.user_id = user_id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhoneNumber() {

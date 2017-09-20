@@ -66,7 +66,7 @@ public class FirebaseHelperInstrumentationTest {
         }
         sign_in();
         make_trip();
-        helper = new FirebaseHelper();
+        //helper = new FirebaseHelper();
 
     }
 
@@ -101,7 +101,7 @@ public class FirebaseHelperInstrumentationTest {
         location.setLat(20.0);
         date = new Date(10, 3, 3);
 
-        user = new UserBuilder().setFirst_name_tag("manny").setFirstName("sing").createUser();
+        //user = new UserBuilder().setFirst_name_tag("manny").setFirstName("sing").createUser();
         passengerList = new ArrayList<>();
         passengerList.add(user);
 

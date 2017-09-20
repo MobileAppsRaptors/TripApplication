@@ -7,7 +7,8 @@ import java.util.List;
 
 public class UserBuilder {
     private String user_id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String phoneNumber;
     private Uri imageUri;
     private URL googleAcctLink;
@@ -30,8 +31,13 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setName(String name) {
-        this.name = name;
+    public UserBuilder setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public UserBuilder setLastName(String lastName) {
+        this.lastName = lastName;
         return this;
     }
 
@@ -116,7 +122,7 @@ public class UserBuilder {
     }
 
     public User createUser() {
-        return new User(user_id, name, phoneNumber, imageUri, googleAcctLink, fbAcctLink, age, country, state, city, zip, address, email, sex, car, rating, review, tripList);
+        return new User(user_id, firstName, lastName, phoneNumber, imageUri, googleAcctLink, fbAcctLink, age, country, state, city, zip, address, email, sex, car, rating, review, tripList);
     }
 
     public UserBuilder(){}

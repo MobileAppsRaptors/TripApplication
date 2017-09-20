@@ -27,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import javax.inject.Inject;
 
-import static com.example.admin.tripapplication.util.CONSTANTS.PUBLIC_TAG;
 
 public class HomeView extends Fragment {
 
