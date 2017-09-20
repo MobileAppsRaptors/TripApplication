@@ -277,7 +277,7 @@ public class FirebaseHelper {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User out_user = (User) dataSnapshot.getValue();
+                User out_user = dataSnapshot.getValue(User.class);
                 presenter.parseUserData(out_user);
             }
 

@@ -10,6 +10,8 @@
 
     <string name="ADD_USER_SUCC">add data success!</string>
     <string name="ADD_USER_FAIL">add data failed</string>
+    <string name="GET_USER_SUCC">got user data!</string>
+    <string name="GET_USER_FAIL">user not found</string>
     <string name="SIGN_UP_CANCEL">sign up canceled</string>
 
     <string-array name="values">

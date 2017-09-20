@@ -31,6 +31,8 @@ public class User {
     List<Review> review;
     List<Trip> tripList;
 
+    public User(){}
+
     public User(String user_id, String firstName, String lastName, String phoneNumber, Uri imageUri, URL googleAcctLink, URL fbAcctLink, int age, String country, String state, String city, String zip, String address, String email, String sex, Car car, float rating, List<Review> review, List<Trip> tripList) {
         this.user_id = user_id;
         this.firstName = firstName;

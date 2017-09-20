@@ -278,7 +278,9 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     @Override
     public void operationSuccess(String operation) {
-        if (operation.equals(ADD_USER_SUCC))
+        if (operation.equals(ADD_USER_SUCC)){
             Toast.makeText(getApplicationContext(), R.string.ADD_USER_SUCC, Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

@@ -17,7 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.tripapplication.R;
+import com.example.admin.tripapplication.data.FirebaseHelper;
+import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.injection.login.DaggerLoginComponent;
+import com.example.admin.tripapplication.model.firebase.Trip;
+import com.example.admin.tripapplication.model.firebase.User;
+import com.example.admin.tripapplication.view.drawerview.DrawerView;
 import com.example.admin.tripapplication.view.profileview.ProfileView;
 import com.example.admin.tripapplication.view.singupview.SingUpView;
 import com.facebook.AccessToken;
@@ -27,6 +32,7 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -42,6 +48,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseError;
 
 import java.util.Arrays;
 
@@ -51,7 +58,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginView extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginView extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, FirebaseInterface {
 
     private static final String TAG = "LoginView";
     private static final int RC_SIGN_IN = 10;
@@ -75,6 +82,7 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
     @Inject
     LoginPresenter presenter;
     private GoogleSignInAccount account;
+    FirebaseHelper fbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +92,7 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
         setupDaggerComponent();
 
         mAuth = FirebaseAuth.getInstance();
+        fbHelper = new FirebaseHelper(this);
 
         ButterKnife.bind(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -159,8 +168,6 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
-    //TODO facebook authentication
-
     public void FacebookAuth(String email, String password){
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
     }
@@ -224,8 +231,6 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
                     }
                 });
     }
-
-    //TODO google authentication
 
     public void GoogleAuth(String email, String password){
         signIn();
@@ -331,16 +336,10 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
         }
     }
 
-    //TODO REDIRECT CHECK IF USER IS NEW OR IS EXISTING IN OUR DB
     private void updateUI(FirebaseUser currentUser) {
-        if (currentUser != null) {
-            Intent intent = new Intent(this, SingUpView.class);
-            intent.putExtra("google",account);
-            startActivity(intent);
-        }
+        fbHelper.GetUserData(currentUser.getUid());
     }
 
-    //TODO OnActivityResult
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -365,5 +364,42 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
         }
     }
 
-    // TODO: 9/19/2017 Give Olay $20
+    @Override
+    public void parseTrip(Trip trip) {
+
+    }
+
+    @Override
+    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation) {
+
+    }
+
+    @Override
+    public void geoTripsFullyLoaded() {
+
+    }
+
+    @Override
+    public void parseUserData(User user) {
+        if(user == null){
+            Log.d(TAG, "parseUserData: ");
+            Intent intent = new Intent(this, SingUpView.class);
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "parseUserData: start drawerview");
+            Intent intent = new Intent(this, DrawerView.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void throwError(DatabaseError error) {
+        Toast.makeText(getApplicationContext(), R.string.GET_USER_FAIL + error.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void operationSuccess(String operation) {
+        Toast.makeText(getApplicationContext(), R.string.GET_USER_FAIL, Toast.LENGTH_SHORT).show();
+    }
+
 }
