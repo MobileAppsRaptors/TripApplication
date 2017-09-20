@@ -56,10 +56,9 @@ public class FirebaseHelper {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips");
 
-        //This adds a random key under trips
-        myRef.push();
+        //This adds a random key under trip
 
-        String trip_key = myRef.getKey();
+        String trip_key = myRef.push().getKey();
         myRef.child(trip_key).setValue(trip)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
 
@@ -73,8 +72,6 @@ public class FirebaseHelper {
                     }
                 });
 
-
-
         AddTripUser(trip_key, trip);
 
         return true;
@@ -84,11 +81,7 @@ public class FirebaseHelper {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/tripList");
 
-        myRef.push();
-
-        String trip_user_key = myRef.getKey();
-
-        myRef.child(trip_user_key).setValue(trip)
+        myRef.child(trip_key).setValue(trip)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
 
                     @Override
@@ -104,8 +97,10 @@ public class FirebaseHelper {
     }
 
     private void AddGeoFire(final String trip_key, Location origin, final Location destination) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("geofire/destination");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("geofire/origin");
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("geofire/destination");
         final GeoFire geoFire = new GeoFire(ref);
+        final GeoFire geofire1 = new GeoFire(ref2);
         geoFire.setLocation(trip_key, new GeoLocation(origin.getLat(),origin.getLng()), new GeoFire.CompletionListener() {
             @Override
             public void onComplete(String key, DatabaseError error) {
@@ -114,7 +109,7 @@ public class FirebaseHelper {
                     presenter.throwError(error);
                 } else {
                     System.out.println("Location saved on server successfully!" + key);
-                    geoFire.setLocation(trip_key, new GeoLocation(destination.getLat(), destination.getLng()), new GeoFire.CompletionListener() {
+                    geofire1.setLocation(trip_key, new GeoLocation(destination.getLat(), destination.getLng()), new GeoFire.CompletionListener() {
                         @Override
                         public void onComplete(String key, DatabaseError error) {
                             if(error != null){
@@ -159,6 +154,7 @@ public class FirebaseHelper {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users").child(fb_user.getUid());
 
+        final FirebaseInterface presenter = this.presenter;
         myRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -267,7 +263,7 @@ public class FirebaseHelper {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips/" + trip_id);
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 presenter.parseTrip((Trip) dataSnapshot.getChildren());
@@ -288,7 +284,7 @@ public class FirebaseHelper {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users").child(user_id);
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User out_user = dataSnapshot.getValue(User.class);
