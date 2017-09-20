@@ -162,6 +162,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
         switch (view.getId()) {
             case R.id.btnCancel:
                 etName.setText("");
+                etLastName.setText("");
                 etAddress.setText("");
                 etCity.setText("");
                 etState.setText("");
@@ -179,7 +180,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
                 break;
             case R.id.btnSubmit:
-                final FirebaseHelper fbHelper = new FirebaseHelper(this);
+                FirebaseHelper fbHelper = new FirebaseHelper(this);
                 FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
                 userBuilder.setUser_id(fb_user.getUid());
                 userBuilder.setFirstName(etName.getText().toString());
@@ -293,7 +294,6 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     @Override
     public void parseUserData(User user) {
-
     }
 
     @Override
