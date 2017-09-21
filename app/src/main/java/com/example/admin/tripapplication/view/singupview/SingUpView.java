@@ -121,11 +121,11 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
         etLastName.setText(user.getLastName());
         etAddress.setText(user.getAddress());
         etCity.setText(user.getCity());
-        etState.setText("");
-        etZipCode.setText("");
-        etCountry.setText("");
-        etEmail.setText("");
-        etPhoneNumber.setText("");
+        etState.setText(user.getState());
+        etZipCode.setText(user.getZip());
+        etCountry.setText(user.getCountry());
+        etEmail.setText(user.getEmail());
+        etPhoneNumber.setText(user.getPhoneNumber());
     }
 
     private void setupDaggerComponent() {

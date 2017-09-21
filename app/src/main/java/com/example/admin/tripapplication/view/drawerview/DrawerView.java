@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.example.admin.tripapplication.R;
+import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.injection.drawer.DaggerDrawerComponent;
 import com.example.admin.tripapplication.model.firebase.Review;
@@ -105,9 +106,8 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Events.MessageEvent event){
         if(event.getAction().equals(START_SIGNUP_ACTIVITY)){
-            Intent intent = new Intent(this, SingUpView.class);
-            intent.putExtra("user", (String) event.getObject());
-            startActivityForResult(intent, ACTIVITY_SUCC);
+            FirebaseHelper fbHelper = new FirebaseHelper(this);
+            fbHelper.GetUserData((String) event.getObject());
         }
     }
 
@@ -267,7 +267,9 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
 
     @Override
     public void parseUserData(User user) {
-
+        Intent intent = new Intent(this, SingUpView.class);
+        intent.putExtra("user", user);
+        startActivityForResult(intent, ACTIVITY_SUCC);
     }
 
     @Override
