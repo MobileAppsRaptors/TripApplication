@@ -89,7 +89,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     SingUpPresenter presenter;
     private Uri customImage;
 
-    User user;
+    User user, user_new;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +116,16 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
         Intent intent = getIntent();
         user = intent.getParcelableExtra("user");
+
+        etName.setText(user.getFirstName());
+        etLastName.setText(user.getLastName());
+        etAddress.setText(user.getAddress());
+        etCity.setText(user.getCity());
+        etState.setText("");
+        etZipCode.setText("");
+        etCountry.setText("");
+        etEmail.setText("");
+        etPhoneNumber.setText("");
     }
 
     private void setupDaggerComponent() {
@@ -224,7 +234,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
                     break;
                 }
 
-                User user_new = userBuilder.createUser();
+                user_new = userBuilder.createUser();
 
                 fbHelper.UpdateUser(user_new,customImage);
                 break;
@@ -312,6 +322,9 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     public void operationSuccess(String operation) {
         if (operation.equals(ADD_USER_SUCC)){
             Toast.makeText(getApplicationContext(), R.string.ADD_USER_SUCC, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.putExtra("user", user_new);
+            setResult(ACTIVITY_SUCC, intent);
             finish();
         }
 

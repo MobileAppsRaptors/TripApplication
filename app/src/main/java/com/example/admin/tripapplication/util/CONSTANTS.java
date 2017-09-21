@@ -29,7 +29,10 @@ public class CONSTANTS {
     public static final String GET_TRIP_FAIL = "GET_TRIP_FAIL";
     public static final String SIGN_UP_CANCEL = "SIGN_UP_CANCEL";
 
-
+    //Event constants
+    public static final int ACTIVITY_SUCC = 123;
+    public static final String START_SIGNUP_ACTIVITY = "START_SIGNUP_ACTIVITY";
+    public static final String UPDATED_USER_PROFILE = "UPDATED_USER_PROFILE";
 
     // -------------------Used for fragments and Navigation Drawer --------------------------
     public static final String PACKAGE_NAME = "";
