@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -297,7 +299,7 @@ public class FirebaseHelper {
     public void GetUserData(String user_id){
         //field, tag, setting
         // if tag null read field
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users").child(user_id);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -313,6 +315,126 @@ public class FirebaseHelper {
                 presenter.throwError(databaseError);
             }
         });
+    }
+
+    public void GetPublicUserData(String user_id){
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference pictureRef = database.getReference("users").child(user_id).child("imageURL");
+        DatabaseReference firstNameRef = database.getReference("users").child(user_id).child("firstName");
+        DatabaseReference lastNameRef = database.getReference("users").child(user_id).child("lastName");
+        DatabaseReference phoneRef = database.getReference("users").child(user_id).child("phoneNumber");
+        DatabaseReference emailRef = database.getReference("users").child(user_id).child("email");
+
+        final User user = new UserBuilder().setUser_id(user_id).createUser();
+        final DatabaseError[] throw_error = {null};
+
+        //get map of sources
+        //map of tasks
+        //get list from map
+
+        final TaskCompletionSource<DataSnapshot> dbPictureSource = new TaskCompletionSource<>();
+        final TaskCompletionSource<DataSnapshot> dbFirstNameSource = new TaskCompletionSource<>();
+        final TaskCompletionSource<DataSnapshot> dbLastNameSource = new TaskCompletionSource<>();
+        final TaskCompletionSource<DataSnapshot> dbPhoneNumberSource = new TaskCompletionSource<>();
+        final TaskCompletionSource<DataSnapshot> dbEmailSource = new TaskCompletionSource<>();
+        final Task dbPictureTask = dbPictureSource.getTask();
+        final Task dbLastNameTask = dbLastNameSource.getTask();
+        final Task dbFirstNameTask = dbFirstNameSource.getTask();
+        final Task dbPhoneNumberTask = dbPhoneNumberSource.getTask();
+        final Task dbEmailTask = dbEmailSource.getTask();
+
+        pictureRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dbPictureSource.setResult(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                dbPictureSource.setException(databaseError.toException());
+            }
+        });
+
+        firstNameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dbFirstNameSource.setResult(dataSnapshot);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                dbFirstNameSource.setException(databaseError.toException());
+            }
+        });
+
+        lastNameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println(TAG + " Getting Public Data");
+                dbLastNameSource.setResult(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                dbLastNameSource.setException(databaseError.toException());
+            }
+        });
+
+        phoneRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dbPhoneNumberSource.setResult(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                dbPhoneNumberSource.setException(databaseError.toException());
+            }
+        });
+
+        emailRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dbEmailSource.setResult(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                dbEmailSource.setException(databaseError.toException());
+            }
+        });
+
+        Task allTask = Tasks.whenAll(dbPictureTask,dbFirstNameTask,dbLastNameTask,dbPhoneNumberTask,dbEmailTask);
+        allTask.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                DataSnapshot data;
+                //Picture
+                data = (DataSnapshot) dbPictureTask.getResult();
+                user.setImageURL(data.getValue(String.class));
+                //Firstname
+                data = (DataSnapshot) dbFirstNameTask.getResult();
+                user.setFirstName(data.getValue(String.class));
+                //Lastname
+                data = (DataSnapshot) dbLastNameTask.getResult();
+                user.setLastName(data.getValue(String.class));
+                //Phone number
+                data = (DataSnapshot) dbPhoneNumberTask.getResult();
+                user.setPhoneNumber(data.getValue(String.class));
+                //Email
+                data = (DataSnapshot) dbEmailTask.getResult();
+                user.setEmail(data.getValue(String.class));
+                presenter.parseUserData(user);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                presenter.throwError(DatabaseError.fromException(e));
+            }
+        });
+
     }
 
     //TODO find way to deal with rating field

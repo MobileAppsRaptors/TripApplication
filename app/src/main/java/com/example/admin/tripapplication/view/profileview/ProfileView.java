@@ -6,20 +6,50 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.tripapplication.R;
+import com.example.admin.tripapplication.data.FirebaseHelper;
+import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.injection.profile.DaggerProfileComponent;
+import com.example.admin.tripapplication.model.firebase.Trip;
+import com.example.admin.tripapplication.model.firebase.User;
+import com.firebase.geofire.GeoLocation;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProfileView extends Fragment {
+public class ProfileView extends Fragment implements FirebaseInterface{
 
     private static final String TAG = "ProfileView";
 
     @Inject
     ProfilePresenter presenter;
+
+    @BindView(R.id.btnGoEditProfile)
+    ImageView btnGoEditProfile;
+    @BindView(R.id.ivProfile_image)
+    CircularImageView ivProfileImage;
+    @BindView(R.id.tvName)
+    TextView tvName;
+    @BindView(R.id.tvPhoneNumber)
+    TextView tvPhoneNumber;
+    @BindView(R.id.tvEmail)
+    TextView tvEmail;
+    @BindView(R.id.tvAddress)
+    TextView tvAddress;
+
+    FirebaseHelper fbHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,10 +64,50 @@ public class ProfileView extends Fragment {
         ButterKnife.bind(this, view);
 
         setupDaggerComponent();
+
+        fbHelper = new FirebaseHelper(this);
+
+        fbHelper.GetPublicUserData(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     private void setupDaggerComponent() {
         DaggerProfileComponent.create().inject(this);
+    }
+
+
+    @Override
+    public void parseTrip(Trip trip) {
+
+    }
+
+    @Override
+    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation) {
+
+    }
+
+    @Override
+    public void geoTripsFullyLoaded() {
+
+    }
+
+    @Override
+    public void parseUserData(User user) {
+        if(user.getImageURL() != null){
+            Picasso.with(getContext()).load(user.getImageURL()).into(ivProfileImage);
+        }
+        tvName.setText(user.getFirstName() + " " + user.getLastName());
+        tvPhoneNumber.setText(user.getPhoneNumber());
+        tvEmail.setText(user.getEmail());
+    }
+
+    @Override
+    public void throwError(DatabaseError error) {
+        Toast.makeText(getActivity(), R.string.GET_USER_FAIL, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void operationSuccess(String operation) {
+
     }
 
     //TODO segment view by user/viewer
