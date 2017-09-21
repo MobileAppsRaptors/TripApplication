@@ -118,6 +118,10 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
             setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
             setTitle("Trips near your area");
         }
+        if(event.getAction().equals(PARSE_SUBMITTED_REVIEW)){
+            FirebaseHelper fbHelper = new FirebaseHelper(this);
+            fbHelper.AddUserReview((Review) event.getObject());
+        }
     }
 
     @Override

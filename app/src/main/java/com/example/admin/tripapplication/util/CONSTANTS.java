@@ -27,6 +27,8 @@ public class CONSTANTS {
     public static final String GET_USER_FAIL = "GET_USER_FAIL";
     public static final String ADD_TRIP_SUCC = "ADD_TRIP_SUCC";
     public static final String GET_TRIP_FAIL = "GET_TRIP_FAIL";
+    public static final String ADD_REVIEW_SUCC = "ADD_REVIEW_SUCC";
+    public static final String GET_REVIEW_SUCC = "GET_REVIEW_SUCC";
     public static final String SIGN_UP_CANCEL = "SIGN_UP_CANCEL";
 
     //Event constants
@@ -34,14 +36,15 @@ public class CONSTANTS {
     public static final String START_SIGNUP_ACTIVITY = "START_SIGNUP_ACTIVITY";
     public static final String START_GOOGLE_TRIP = "START_GOOGLE_TRIP";
     public static final String UPDATED_USER_PROFILE = "UPDATED_USER_PROFILE";
+    public static final String PARSE_SUBMITTED_REVIEW = "PARSE_SUBMITTED_REVIEW";
 
     // -------------------Used for fragments and Navigation Drawer --------------------------
     public static final String PACKAGE_NAME = "";
 
     //Review fragment
-    public static final String CLEAR_STAR = "&#xf006;";
-    public static final String FILLED_STAR = "&#xf005;";
-    public static final String HALF_STAR = "&#xf123;";
+    public static final String CLEAR_STAR = "\uf006";
+    public static final String FILLED_STAR = "\uf005";
+    public static final String HALF_STAR = "\uf123";
 
     //Relation name menu -> Class Fragment   and Class Fragment -> Menu
     public static Hashtable<String, String> classSubName = new Hashtable<String, String>();

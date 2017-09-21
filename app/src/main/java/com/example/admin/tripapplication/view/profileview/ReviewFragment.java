@@ -8,7 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.admin.tripapplication.R;
+import com.example.admin.tripapplication.model.firebase.Review;
+import com.example.admin.tripapplication.util.Events;
 import com.example.admin.tripapplication.util.NormalButtonIcon;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +21,7 @@ import butterknife.OnClick;
 
 import static com.example.admin.tripapplication.util.CONSTANTS.CLEAR_STAR;
 import static com.example.admin.tripapplication.util.CONSTANTS.FILLED_STAR;
+import static com.example.admin.tripapplication.util.CONSTANTS.PARSE_SUBMITTED_REVIEW;
 
 /**
  * Created by Admin on 9/21/2017.
@@ -36,13 +42,20 @@ public class ReviewFragment extends DialogFragment {
     @BindView(R.id.btnSubmit)
     NormalButtonIcon btnSubmit;
 
-    float rating;
+    int rating;
+    String user_id;
+    String userName;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_review, container, false);
-        getDialog().setTitle("DialogFragment Tutorial");
+        getDialog().setTitle("Submit a Review");
 
         ButterKnife.bind(this, rootView);
 
@@ -51,6 +64,9 @@ public class ReviewFragment extends DialogFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Bundle args = getArguments();
+        user_id = args.getString("user_id");
+        userName = args.getString("name");
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -106,7 +122,17 @@ public class ReviewFragment extends DialogFragment {
                 rating = 5;
                 break;
             case R.id.btnSubmit:
+                //TODO add edit text
+                Review review = new Review(FirebaseAuth.getInstance().getCurrentUser().getUid(), user_id, rating, null);
+                Events.MessageEvent event = new Events.MessageEvent(PARSE_SUBMITTED_REVIEW, review);
+                EventBus.getDefault().post(event);
+                dismiss();
                 break;
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

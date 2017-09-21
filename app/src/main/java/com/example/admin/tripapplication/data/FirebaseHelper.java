@@ -130,20 +130,30 @@ public class FirebaseHelper {
     }
 
     //TODO still needs testing
-    public void AddUserReview(Review review){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public void AddUserReview(final Review review){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users").child(review.getReviewee()).child("review");
 
-        String r_key = myRef.push().getKey();
+        final String r_key = myRef.push().getKey();
 
-        myRef = database.getReference("review").child(review.getReviewer()).child(r_key);
-
-        myRef.setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
+        myRef.child(r_key).setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(!task.isSuccessful()){
                     System.out.println(TAG + " AddUserReview Failed " + task.getException().getMessage());
                     presenter.throwError(DatabaseError.fromException(task.getException()));
+                } else {
+                    DatabaseReference r_ref = database.getReference("review").child(r_key);
+                    r_ref.setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(!task.isSuccessful()){
+                                presenter.throwError(DatabaseError.fromException(task.getException()));
+                            } else {
+                                presenter.operationSuccess(ADD_REVIEW_SUCC);
+                            }
+                        }
+                    });
                 }
             }
         });
