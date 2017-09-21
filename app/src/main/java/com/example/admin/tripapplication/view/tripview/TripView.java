@@ -109,17 +109,22 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
 
     private void TextMoneyFormat() {
         tt = new TextWatcher() {
-            public void afterTextChanged(Editable s){}
-            public void beforeTextChanged(CharSequence s,int start,int count, int after){}
+            public void afterTextChanged(Editable s) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             private String current = "";
+
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!s.toString().equals(current)){
+                if (!s.toString().equals(current)) {
                     etPrice.removeTextChangedListener(this);
 
                     String cleanString = s.toString().replaceAll("[$,.]", "");
 
                     double parsed = Double.parseDouble(cleanString);
-                    String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
+                    String formatted = NumberFormat.getCurrencyInstance().format((parsed / 100));
 
                     current = formatted;
                     etPrice.setText(formatted);
@@ -145,7 +150,8 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
                     } else {
                         etPrice.setCursorVisible(false);
                     }
-                }catch(Exception ex){}
+                } catch (Exception ex) {
+                }
             }
         });
         etPrice.setOnClickListener(new View.OnClickListener() {
@@ -181,12 +187,12 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         unbinder.unbind();
     }
 
-    @OnClick({R.id.CDestination, R.id.tvDestination, R.id.COrigin , R.id.tvOrigin, R.id.btnSubmit})
+    @OnClick({R.id.CDestination, R.id.tvDestination, R.id.COrigin, R.id.tvOrigin, R.id.btnSubmit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tvOrigin:
             case R.id.COrigin:
-                if(!stop_duplicate_call) {
+                if (!stop_duplicate_call) {
                     stop_duplicate_call = true;
                     try {
                         PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
@@ -205,7 +211,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
                 break;
             case R.id.tvDestination:
             case R.id.CDestination:
-                if(!stop_duplicate_call) {
+                if (!stop_duplicate_call) {
                     stop_duplicate_call = true;
                     try {
                         PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
@@ -239,29 +245,36 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
 
         double leniancy = 2;
         int seats = Seats.getSelectedItem();
-        float cost = Float.parseFloat(etPrice.getText().toString().replace("$",""));
+
+        float cost;
+        try {
+            cost = Float.parseFloat(etPrice.getText().toString().replace("$", ""));
+        } catch (Exception ex) {
+            Toast.makeText(getContext(), "Number for cost is too big!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Map<String, User> passengerList = new HashMap<>();
 
         String error = "";
-        if(origin == null) {
+        if (origin == null) {
             error += " origin,";
             tvOrigin.setError("Origin required");
         }
-        if(destination == null) {
+        if (destination == null) {
             error += " destination,";
             tvDestination.setError("Destination required");
         }
-        if(tvDate.getText().toString().isEmpty()) {
+        if (tvDate.getText().toString().isEmpty()) {
             error += " date,";
             tvDate.setError("Date Required");
         }
-        if(tvHour.getText().toString().isEmpty()) {
+        if (tvHour.getText().toString().isEmpty()) {
             error += " hour,";
             tvHour.setError("Hour required");
         }
 
-        if(!error.isEmpty()) {
-            error = error.substring(0,error.length()-1);
+        if (!error.isEmpty()) {
+            error = error.substring(0, error.length() - 1);
             Toast.makeText(getContext(), "You need to fill the fields: " + error, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -309,10 +322,10 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
 
                                 String today = getCurrentDate();
 
-                                if(!tvHour.getText().toString().isEmpty()){
+                                if (!tvHour.getText().toString().isEmpty()) {
                                     Double selected_hour = Double.parseDouble(tvHour.getText().toString().split(":")[0]);
                                     Double selected_minute = Double.parseDouble(tvHour.getText().toString().split(":")[1]);
-                                    if(tvDate.getText().toString().equals(today) && (selected_hour < current_hour || (selected_hour == current_hour && selected_minute < current_minute))){
+                                    if (tvDate.getText().toString().equals(today) && (selected_hour < current_hour || (selected_hour == current_hour && selected_minute < current_minute))) {
                                         Toast.makeText(getContext(), "You must not put time in the past", Toast.LENGTH_SHORT).show();
                                         tvHour.setText("");
                                     }
@@ -340,11 +353,10 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
 
                                 //Validating is not time in the past
                                 String today = getCurrentDate();
-                                if(tvDate.getText().toString().equals(today) && (hourOfDay < mHour || (hourOfDay == mHour && minute < mMinute))){
+                                if (tvDate.getText().toString().equals(today) && (hourOfDay < mHour || (hourOfDay == mHour && minute < mMinute))) {
                                     Toast.makeText(getContext(), "You must not put time in the past", Toast.LENGTH_SHORT).show();
                                     tvHour.setText("");
-                                }
-                                else
+                                } else
                                     tvHour.setText(hour_format + ":" + minute_format);
                             }
                         }, mHour, mMinute, false);
@@ -415,7 +427,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
 
     @Override
     public void parseUserData(User user) {
-        if(user != null){
+        if (user != null) {
             CollectDataToInsert(user);
         }
     }
@@ -432,7 +444,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
 
     @Override
     public void operationSuccess(String operation) {
-        if(operation.equals(ADD_TRIP_SUCC)){
+        if (operation.equals(ADD_TRIP_SUCC)) {
             Toast.makeText(getContext(), R.string.ADD_TRIP_SUCC, Toast.LENGTH_SHORT).show();
         }
 
