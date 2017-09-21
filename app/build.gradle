@@ -76,6 +76,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.0.4'
     //FancyButtons
     compile 'com.github.medyo:fancybuttons:1.8.4'
+    compile 'org.greenrobot:eventbus:3.0.0'
 }
 
 

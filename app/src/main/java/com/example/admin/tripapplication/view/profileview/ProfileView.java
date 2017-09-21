@@ -1,6 +1,7 @@
 package com.example.admin.tripapplication.view.profileview;
 
 import android.support.annotation.Nullable;
+import android.support.test.espresso.core.deps.guava.eventbus.EventBus;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,11 +20,14 @@ import com.example.admin.tripapplication.injection.profile.DaggerProfileComponen
 import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
+import com.example.admin.tripapplication.util.Events;
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.*;
 
 import java.util.Map;
 
@@ -31,8 +35,12 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+import static com.example.admin.tripapplication.util.CONSTANTS.START_SIGNUP_ACTIVITY;
+import static com.example.admin.tripapplication.util.CONSTANTS.UPDATED_USER_PROFILE;
 import static com.example.admin.tripapplication.util.CONSTANTS.USER_ID;
+import static com.example.admin.tripapplication.util.Functions.getImg;
 
 public class ProfileView extends Fragment implements FirebaseInterface{
 
@@ -56,6 +64,12 @@ public class ProfileView extends Fragment implements FirebaseInterface{
 
     FirebaseHelper fbHelper;
     String source_user_id;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        org.greenrobot.eventbus.EventBus.getDefault().register(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +100,23 @@ public class ProfileView extends Fragment implements FirebaseInterface{
         fbHelper.GetPublicUserData(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
+    @OnClick(R.id.btnGoEditProfile)
+    public void onClick(View view){
+        Events.MessageEvent event = new Events.MessageEvent(START_SIGNUP_ACTIVITY, FirebaseAuth.getInstance().getCurrentUser().getUid());
+        org.greenrobot.eventbus.EventBus.getDefault().post(event);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Events.MessageEvent event){
+        if(event.getAction().equals(UPDATED_USER_PROFILE)){
+            User user = (User) event.getObject();
+            AddImgCircle(user, FirebaseAuth.getInstance());
+            tvName.setText(user.getFirstName() + " " + user.getLastName());
+            tvPhoneNumber.setText(user.getPhoneNumber());
+            tvEmail.setText(user.getEmail());
+        }
+    }
+
     private void setupDaggerComponent() {
         DaggerProfileComponent.create().inject(this);
     }
@@ -108,12 +139,18 @@ public class ProfileView extends Fragment implements FirebaseInterface{
 
     @Override
     public void parseUserData(User user) {
-        if(user.getImageURL() != null){
-            Picasso.with(getContext()).load(user.getImageURL()).into(ivProfileImage);
-        }
+        AddImgCircle(user, FirebaseAuth.getInstance());
         tvName.setText(user.getFirstName() + " " + user.getLastName());
         tvPhoneNumber.setText(user.getPhoneNumber());
         tvEmail.setText(user.getEmail());
+    }
+
+    private void AddImgCircle(User user, FirebaseAuth mAuth) {
+        String img = getImg(user, mAuth);
+        if(img.isEmpty())
+            ivProfileImage.setImageResource(R.drawable.ic_without_picture);
+        else
+            Picasso.with(getContext()).load(img).into(ivProfileImage);
     }
 
     @Override
@@ -129,6 +166,12 @@ public class ProfileView extends Fragment implements FirebaseInterface{
     @Override
     public void operationSuccess(String operation) {
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        org.greenrobot.eventbus.EventBus.getDefault().unregister(this);
     }
 
     //TODO segment view by user/viewer
