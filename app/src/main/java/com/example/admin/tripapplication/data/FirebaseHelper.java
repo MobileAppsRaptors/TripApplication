@@ -347,6 +347,7 @@ public class FirebaseHelper {
         DatabaseReference lastNameRef = database.getReference("users").child(user_id).child("lastName");
         DatabaseReference phoneRef = database.getReference("users").child(user_id).child("phoneNumber");
         DatabaseReference emailRef = database.getReference("users").child(user_id).child("email");
+        DatabaseReference genRef = database.getReference("users").child(user_id).child("sex");
 
         final User user = new UserBuilder().setUser_id(user_id).createUser();
         final DatabaseError[] throw_error = {null};
@@ -360,11 +361,13 @@ public class FirebaseHelper {
         final TaskCompletionSource<DataSnapshot> dbLastNameSource = new TaskCompletionSource<>();
         final TaskCompletionSource<DataSnapshot> dbPhoneNumberSource = new TaskCompletionSource<>();
         final TaskCompletionSource<DataSnapshot> dbEmailSource = new TaskCompletionSource<>();
+        final TaskCompletionSource<DataSnapshot> dbGenSource = new TaskCompletionSource<>();
         final Task dbPictureTask = dbPictureSource.getTask();
         final Task dbLastNameTask = dbLastNameSource.getTask();
         final Task dbFirstNameTask = dbFirstNameSource.getTask();
         final Task dbPhoneNumberTask = dbPhoneNumberSource.getTask();
         final Task dbEmailTask = dbEmailSource.getTask();
+        final Task dbGenTask = dbGenSource.getTask();
 
         pictureRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -426,6 +429,18 @@ public class FirebaseHelper {
             }
         });
 
+        genRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dbGenSource.setResult(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                dbGenSource.setException(databaseError.toException());
+            }
+        });
+
         Task allTask = Tasks.whenAll(dbPictureTask,dbFirstNameTask,dbLastNameTask,dbPhoneNumberTask,dbEmailTask);
         allTask.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -446,6 +461,9 @@ public class FirebaseHelper {
                 //Email
                 data = (DataSnapshot) dbEmailTask.getResult();
                 user.setEmail(data.getValue(String.class));
+                //Gender
+                data = (DataSnapshot) dbGenTask.getResult();
+                user.setSex(data.getValue(String.class));
                 presenter.parseUserData(user);
             }
         }).addOnFailureListener(new OnFailureListener() {
