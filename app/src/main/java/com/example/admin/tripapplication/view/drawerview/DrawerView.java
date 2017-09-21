@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.util.Events;
+import com.example.admin.tripapplication.view.googletripview.GoogleTripView;
 import com.example.admin.tripapplication.view.homeview.HomeView;
 import com.example.admin.tripapplication.view.profileview.ProfileView;
 import com.example.admin.tripapplication.view.singupview.SingUpView;
@@ -88,6 +90,8 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
         TypefaceProvider.registerDefaultIconSets();
         setContentView(R.layout.activity_drawer);
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         ButterKnife.bind(this);
 
 
@@ -108,6 +112,11 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
         if(event.getAction().equals(START_SIGNUP_ACTIVITY)){
             FirebaseHelper fbHelper = new FirebaseHelper(this);
             fbHelper.GetUserData((String) event.getObject());
+        }
+        if(event.getAction().equals(START_GOOGLE_TRIP)) {
+            Fragment fragment = new GoogleTripView();
+            setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
+            setTitle("Trips near your area");
         }
     }
 

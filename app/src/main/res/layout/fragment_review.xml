@@ -3,16 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
     android:layout_gravity="center_vertical|center_horizontal"
     android:layout_width="300dp"
-    android:layout_height="400dp">
+    android:layout_height="wrap_content">
 
     <TextView
         android:textSize="20sp"
         android:text= "Hello World"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView2"
+        android:id="@+id/tvUser"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
@@ -21,113 +22,76 @@
 
     <com.example.admin.tripapplication.util.NormalButtonIcon
         android:id="@+id/btnOneStar"
-        android:text="&#xf005;"
-        android:textSize="30dp"
-        android:textColor="@color/bootstrap_brand_warning"
-        android:background="@android:color/transparent"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        android:layout_marginLeft="8dp"
-
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/btnTwoStar"
-        android:layout_marginStart="8dp" />
+        android:background="@android:color/transparent"
+        android:text="&#xf005;"
+
+        android:textColor="@color/bootstrap_brand_warning"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@+id/tvUser"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <com.example.admin.tripapplication.util.NormalButtonIcon
         android:id="@+id/btnTwoStar"
-        android:text="&#xf005;"
-        android:textSize="30dp"
-        android:textColor="@color/bootstrap_brand_warning"
-        android:background="@android:color/transparent"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <com.example.admin.tripapplication.util.NormalButtonIcon
-        android:id="@+id/btnThreeStar"
-        android:text="&#xf005;"
-        android:textSize="30dp"
-        android:textColor="@color/bootstrap_brand_warning"
-        android:background="@android:color/transparent"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/btnOneStar"
-        android:layout_marginStart="8dp" />
-
-    <com.example.admin.tripapplication.util.NormalButtonIcon
-        android:id="@+id/btnFourStar"
-        android:text="&#xf005;"
-        android:textSize="30dp"
-        android:textColor="@color/bootstrap_brand_warning"
-        android:background="@android:color/transparent"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/btnFiveStar"
-        android:layout_marginStart="8dp" />
-
-    <com.example.admin.tripapplication.util.NormalButtonIcon
-        android:id="@+id/btnFiveStar"
-        android:text="&#xf005;"
-        android:textSize="30dp"
-        android:textColor="@color/bootstrap_brand_warning"
-        android:background="@android:color/transparent"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/btnThreeStar"
-        android:layout_marginStart="8dp" />
-
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="265dp"
-        android:layout_height="240dp"
-        android:layout_margin="8dp"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/white_button_boarder"
-        android:theme="@style/TextLabel"
-        android:touchscreenBlocksFocus="false"
-        app:layout_constraintHorizontal_bias="0.37"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnTwoStar"
-        android:layout_marginRight="8dp">
+        android:background="@android:color/transparent"
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:gravity="top|left"
-            android:hint="Please add a review"
-            android:inputType="textMultiLine"
-            android:maxLength="300" />
-    </android.support.design.widget.TextInputLayout>
+        android:text="&#xf005;"
+        android:textColor="@color/bootstrap_brand_warning"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@+id/tvUser"
+        app:layout_constraintLeft_toRightOf="@+id/btnOneStar" />
+
+    <com.example.admin.tripapplication.util.NormalButtonIcon
+        android:id="@+id/btnThreeStar"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:text="&#xf005;"
+        android:textColor="@color/bootstrap_brand_warning"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@+id/tvUser"
+        app:layout_constraintLeft_toRightOf="@+id/btnTwoStar"
+        android:layout_marginLeft="8dp" />
+
+    <com.example.admin.tripapplication.util.NormalButtonIcon
+        android:id="@+id/btnFourStar"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:text="&#xf005;"
+        android:textColor="@color/bootstrap_brand_warning"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toRightOf="@+id/btnFiveStar"
+        app:layout_constraintTop_toBottomOf="@+id/tvUser" />
+
+    <com.example.admin.tripapplication.util.NormalButtonIcon
+        android:id="@+id/btnFiveStar"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:text="&#xf005;"
+        android:textColor="@color/bootstrap_brand_warning"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toRightOf="@+id/btnThreeStar"
+        app:layout_constraintTop_toBottomOf="@+id/tvUser" />
+
 
     <com.example.admin.tripapplication.util.NormalButtonIcon
         android:id="@+id/btnSubmit"
@@ -143,9 +107,35 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="240dp"
+        android:layout_margin="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="1.0" />
+        android:background="@drawable/white_button_boarder"
+        android:theme="@style/TextLabel"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnOneStar"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit">
+
+        <EditText
+            android:id="@+id/tvReview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="top|left"
+            android:hint="Please add a review"
+            android:inputType="textMultiLine"
+            android:maxLength="300"
+            tools:ignore="RtlHardcoded" />
+    </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>
