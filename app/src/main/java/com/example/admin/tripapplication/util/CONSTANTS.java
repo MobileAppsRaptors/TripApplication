@@ -37,6 +37,11 @@ public class CONSTANTS {
     // -------------------Used for fragments and Navigation Drawer --------------------------
     public static final String PACKAGE_NAME = "";
 
+    //Review fragment
+    public static final String CLEAR_STAR = "&#xf006;";
+    public static final String FILLED_STAR = "&#xf005;";
+    public static final String HALF_STAR = "&#xf123;";
+
     //Relation name menu -> Class Fragment   and Class Fragment -> Menu
     public static Hashtable<String, String> classSubName = new Hashtable<String, String>();
     static {

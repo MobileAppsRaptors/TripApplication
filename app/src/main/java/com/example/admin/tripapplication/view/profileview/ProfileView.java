@@ -50,7 +50,7 @@ public class ProfileView extends Fragment implements FirebaseInterface {
     @Inject
     ProfilePresenter presenter;
 
-    @BindView(R.id.btnGoEditProfile)
+    @BindView(R.id.btnBackground)
     ImageView btnGoEditProfile;
     @BindView(R.id.ivProfile_image)
     CircularImageView ivProfileImage;
@@ -107,7 +107,7 @@ public class ProfileView extends Fragment implements FirebaseInterface {
         fbHelper.GetPublicUserData(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
-    @OnClick(R.id.btnGoEditProfile)
+    @OnClick(R.id.btnBackground)
     public void onEditProfileClick(View view) {
         Events.MessageEvent event = new Events.MessageEvent(START_SIGNUP_ACTIVITY, FirebaseAuth.getInstance().getCurrentUser().getUid());
         EventBus.getDefault().post(event);
