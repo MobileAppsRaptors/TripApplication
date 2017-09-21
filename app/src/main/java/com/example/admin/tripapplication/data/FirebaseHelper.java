@@ -35,6 +35,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -132,8 +134,7 @@ public class FirebaseHelper {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users").child(review.getReviewee()).child("review");
 
-        myRef.push();
-        String r_key = myRef.getKey();
+        String r_key = myRef.push().getKey();
 
         myRef = database.getReference("review").child(review.getReviewer()).child(r_key);
 
@@ -147,6 +148,27 @@ public class FirebaseHelper {
             }
         });
 
+    }
+
+    public void GetUserReviews(String user_id){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = db.getReference("users").child(user_id).child("review");
+        final Map<String, Review> out_map = new HashMap<>();
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    out_map.put(data.getKey(), data.getValue(Review.class));
+                }
+                presenter.parseUserReviews(out_map);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                presenter.throwError(databaseError);
+            }
+        });
     }
 
     //TODO check if reviews and cars get overwritten
@@ -284,7 +306,7 @@ public class FirebaseHelper {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                presenter.parseTrip((Trip) dataSnapshot.getChildren());
+                presenter.parseTrip(dataSnapshot.getValue(Trip.class));
             }
 
             @Override
@@ -318,8 +340,6 @@ public class FirebaseHelper {
     }
 
     public void GetPublicUserData(String user_id){
-        final CountDownLatch latch = new CountDownLatch(1);
-
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference pictureRef = database.getReference("users").child(user_id).child("imageURL");

@@ -8,20 +8,20 @@
     android:layout_height="match_parent"
     tools:context="com.example.admin.tripapplication.view.profileview.ProfileView">
 
-
     <TextView
         android:id="@+id/tvAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
         android:text="  address"
         android:textAppearance="@style/TextLabel"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddressLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAddressLabel"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/tvAddressLabel"
@@ -37,7 +37,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
 
 
@@ -47,12 +49,13 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
         android:text="  emailaddr"
         android:textAppearance="@style/TextLabel"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEmailLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEmailLabel"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/tvEmailLabel"
@@ -68,7 +71,9 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/tvPhoneNumber"
@@ -76,13 +81,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
         android:text="  phonenumber"
         android:textAppearance="@style/TextLabel"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumberLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumberLabel"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/tvPhoneNumberLabel"
@@ -98,7 +104,9 @@
         android:layout_width="0dp"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <TextView
         android:id="@+id/tvName"
@@ -112,7 +120,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toTopOf="@+id/guideline7" />
+        app:layout_constraintTop_toTopOf="@+id/guideline7"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <Button
         android:background="@drawable/edit_black"
@@ -122,14 +132,17 @@
         android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="14dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        android:layout_marginEnd="16dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline7"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.33" />
+        app:layout_constraintGuide_percent="0.33"
+        tools:layout_editor_absoluteY="187dp"
+        tools:layout_editor_absoluteX="0dp" />
 
 
 
@@ -137,10 +150,6 @@
         android:id="@+id/btnGoEditProfile"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintHorizontal_bias="0.0"
@@ -154,7 +163,7 @@
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/ivProfile_image"
         android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_height="252dp"
         android:src="@drawable/ic_without_picture"
         app:civ_border_color="#ab0658"
         app:civ_border_width="2dp"
@@ -168,7 +177,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="@+id/btnGoEditProfile" />
+        app:layout_constraintLeft_toLeftOf="@+id/btnGoEditProfile"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
 
 
