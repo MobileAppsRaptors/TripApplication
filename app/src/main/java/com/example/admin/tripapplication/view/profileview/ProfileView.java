@@ -1,14 +1,11 @@
 package com.example.admin.tripapplication.view.profileview;
 
-import android.support.annotation.Nullable;
-import android.support.test.espresso.core.deps.guava.eventbus.EventBus;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,13 +18,16 @@ import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.util.Events;
+import com.example.admin.tripapplication.util.NormalButtonIcon;
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
-import org.greenrobot.eventbus.*;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Map;
 
@@ -36,13 +36,14 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 import static com.example.admin.tripapplication.util.CONSTANTS.START_SIGNUP_ACTIVITY;
 import static com.example.admin.tripapplication.util.CONSTANTS.UPDATED_USER_PROFILE;
 import static com.example.admin.tripapplication.util.CONSTANTS.USER_ID;
 import static com.example.admin.tripapplication.util.Functions.getImg;
 
-public class ProfileView extends Fragment implements FirebaseInterface{
+public class ProfileView extends Fragment implements FirebaseInterface {
 
     private static final String TAG = "ProfileView";
 
@@ -61,14 +62,18 @@ public class ProfileView extends Fragment implements FirebaseInterface{
     TextView tvEmail;
     @BindView(R.id.tvAddress)
     TextView tvAddress;
+    @BindView(R.id.btnAddReview)
+    NormalButtonIcon btnAddReview;
 
     FirebaseHelper fbHelper;
     String source_user_id;
 
+    Unbinder unbinder;
+
     @Override
     public void onStart() {
         super.onStart();
-        org.greenrobot.eventbus.EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -78,7 +83,9 @@ public class ProfileView extends Fragment implements FirebaseInterface{
             String source_user_id = getArguments().getString(USER_ID);
         }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -91,7 +98,7 @@ public class ProfileView extends Fragment implements FirebaseInterface{
 
         //if profile is being viewed by another user don't show the edit button
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        if(source_user_id != null && source_user_id != uid){
+        if (source_user_id != null && source_user_id != uid) {
             btnGoEditProfile.setVisibility(View.GONE);
         }
 
@@ -101,14 +108,21 @@ public class ProfileView extends Fragment implements FirebaseInterface{
     }
 
     @OnClick(R.id.btnGoEditProfile)
-    public void onClick(View view){
+    public void onEditProfileClick(View view) {
         Events.MessageEvent event = new Events.MessageEvent(START_SIGNUP_ACTIVITY, FirebaseAuth.getInstance().getCurrentUser().getUid());
-        org.greenrobot.eventbus.EventBus.getDefault().post(event);
+        EventBus.getDefault().post(event);
+    }
+
+    @OnClick(R.id.btnAddReview)
+    public void onAddReviewClick(View view){
+        ReviewFragment reviewFragment = new ReviewFragment();
+        // Show DialogFragment
+        reviewFragment.show(getActivity().getSupportFragmentManager(), "Dialog Fragment");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(Events.MessageEvent event){
-        if(event.getAction().equals(UPDATED_USER_PROFILE)){
+    public void onMessageEvent(Events.MessageEvent event) {
+        if (event.getAction().equals(UPDATED_USER_PROFILE)) {
             User user = (User) event.getObject();
             AddImgCircle(user, FirebaseAuth.getInstance());
             tvName.setText(user.getFirstName() + " " + user.getLastName());
@@ -147,7 +161,7 @@ public class ProfileView extends Fragment implements FirebaseInterface{
 
     private void AddImgCircle(User user, FirebaseAuth mAuth) {
         String img = getImg(user, mAuth);
-        if(img.isEmpty())
+        if (img.isEmpty())
             ivProfileImage.setImageResource(R.drawable.ic_without_picture);
         else
             Picasso.with(getContext()).load(img).into(ivProfileImage);
@@ -171,7 +185,13 @@ public class ProfileView extends Fragment implements FirebaseInterface{
     @Override
     public void onStop() {
         super.onStop();
-        org.greenrobot.eventbus.EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     //TODO segment view by user/viewer

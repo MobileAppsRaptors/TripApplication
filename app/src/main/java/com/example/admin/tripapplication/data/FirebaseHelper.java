@@ -441,7 +441,7 @@ public class FirebaseHelper {
             }
         });
 
-        Task allTask = Tasks.whenAll(dbPictureTask,dbFirstNameTask,dbLastNameTask,dbPhoneNumberTask,dbEmailTask);
+        Task allTask = Tasks.whenAll(dbPictureTask,dbFirstNameTask,dbLastNameTask,dbPhoneNumberTask,dbEmailTask,dbGenTask);
         allTask.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
