@@ -60,5 +60,8 @@ public class CONSTANTS {
 
         classSubName.put("Profile","view.profileview.ProfileView");
         classSubName.put("ProfileView","Profile");
+
+        classSubName.put("Trips near your area","view.googletripview.GoogleTripView");
+        classSubName.put("GoogleTripView","Trips near your area");
     }
 }
