@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +52,7 @@ public class ProfileView extends Fragment implements FirebaseInterface {
     ProfilePresenter presenter;
 
     @BindView(R.id.btnGoEditProfile)
-    ImageView btnGoEditProfile;
+    Button btnGoEditProfile;
     @BindView(R.id.ivProfile_image)
     CircularImageView ivProfileImage;
     @BindView(R.id.tvName)
@@ -84,15 +85,13 @@ public class ProfileView extends Fragment implements FirebaseInterface {
         }
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         setupDaggerComponent();
 
@@ -100,6 +99,8 @@ public class ProfileView extends Fragment implements FirebaseInterface {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if (source_user_id != null && source_user_id != uid) {
             btnGoEditProfile.setVisibility(View.GONE);
+        } else {
+            //btnAddReview.setVisibility(View.GONE);
         }
 
         fbHelper = new FirebaseHelper(this);
@@ -117,7 +118,12 @@ public class ProfileView extends Fragment implements FirebaseInterface {
     public void onAddReviewClick(View view){
         ReviewFragment reviewFragment = new ReviewFragment();
         // Show DialogFragment
-        reviewFragment.show(getActivity().getSupportFragmentManager(), "Dialog Fragment");
+        Bundle args = new Bundle();
+        //TODO change after testing (replace with source_user_id)
+        args.putString("user_id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        args.putString("name", tvName.getText().toString());
+        reviewFragment.setArguments(args);
+        reviewFragment.show(getActivity().getSupportFragmentManager(), "Submit a Review");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
