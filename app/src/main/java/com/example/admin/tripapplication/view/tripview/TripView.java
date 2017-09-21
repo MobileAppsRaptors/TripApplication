@@ -25,6 +25,7 @@ import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.injection.trip.DaggerTripComponent;
+import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.places.nearbyresult.Location;
@@ -417,6 +418,11 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         if(user != null){
             CollectDataToInsert(user);
         }
+    }
+
+    @Override
+    public void parseUserReviews(Map<String, Review> reviewList) {
+
     }
 
     @Override

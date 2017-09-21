@@ -16,6 +16,7 @@ import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.injection.profile.DaggerProfileComponent;
+import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.firebase.geofire.GeoLocation;
@@ -24,10 +25,14 @@ import com.google.firebase.database.DatabaseError;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.admin.tripapplication.util.CONSTANTS.USER_ID;
 
 public class ProfileView extends Fragment implements FirebaseInterface{
 
@@ -50,9 +55,14 @@ public class ProfileView extends Fragment implements FirebaseInterface{
     TextView tvAddress;
 
     FirebaseHelper fbHelper;
+    String source_user_id;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //need to specify arguments if it's someone elses profile
+        if (getArguments() != null) {
+            String source_user_id = getArguments().getString(USER_ID);
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
@@ -64,6 +74,12 @@ public class ProfileView extends Fragment implements FirebaseInterface{
         ButterKnife.bind(this, view);
 
         setupDaggerComponent();
+
+        //if profile is being viewed by another user don't show the edit button
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if(source_user_id != null && source_user_id != uid){
+            btnGoEditProfile.setVisibility(View.GONE);
+        }
 
         fbHelper = new FirebaseHelper(this);
 
@@ -98,6 +114,11 @@ public class ProfileView extends Fragment implements FirebaseInterface{
         tvName.setText(user.getFirstName() + " " + user.getLastName());
         tvPhoneNumber.setText(user.getPhoneNumber());
         tvEmail.setText(user.getEmail());
+    }
+
+    @Override
+    public void parseUserReviews(Map<String, Review> reviewList) {
+
     }
 
     @Override

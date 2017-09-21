@@ -18,6 +18,7 @@ public class CONSTANTS {
     public static final String AUTOCOMPLETE_GOOGLEAPI_PATH = "maps/api/place/autocomplete/json";
 
     //Tag constants
+    public static final String USER_ID = "USER_ID";
     public static final String ADD_IMG_SUCC = "ADD_IMG_SUCC";
     public static final String ADD_IMG_FAIL = "ADD_IMG_FAIL";
     public static final String ADD_USER_SUCC = "ADD_USER_SUCC";

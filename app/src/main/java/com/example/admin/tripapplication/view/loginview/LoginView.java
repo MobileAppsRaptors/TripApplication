@@ -20,6 +20,7 @@ import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.injection.login.DaggerLoginComponent;
+import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.view.drawerview.DrawerView;
@@ -51,6 +52,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -392,6 +394,11 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
         }
         intent.putExtra(getString(R.string.user),user);
         startActivity(intent);
+    }
+
+    @Override
+    public void parseUserReviews(Map<String, Review> reviewList) {
+
     }
 
     @Override

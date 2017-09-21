@@ -22,6 +22,7 @@ import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.injection.singup.DaggerSingUpComponent;
+import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.firebase.UserBuilder;
@@ -36,6 +37,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -294,6 +296,11 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     @Override
     public void parseUserData(User user) {
+    }
+
+    @Override
+    public void parseUserReviews(Map<String, Review> reviewList) {
+
     }
 
     @Override
