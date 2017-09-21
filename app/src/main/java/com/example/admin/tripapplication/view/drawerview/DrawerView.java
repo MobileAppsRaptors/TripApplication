@@ -123,10 +123,15 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        User user = data.getParcelableExtra("user");
-        if(resultCode == ACTIVITY_SUCC){
-            Events.MessageEvent event = new Events.MessageEvent(UPDATED_USER_PROFILE, user);
-            EventBus.getDefault().post(event);
+        switch (resultCode){
+            case ACTIVITY_SUCC:
+                User user = data.getParcelableExtra("user");
+                Events.MessageEvent event = new Events.MessageEvent(UPDATED_USER_PROFILE, user);
+                EventBus.getDefault().post(event);
+                break;
+            case ACTIVITY_LOG_OUT:
+                LogOut();
+                break;
         }
     }
 
@@ -218,13 +223,17 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
 
         switch (id) {
             case R.id.log_out:
-                FirebaseAuth.getInstance().signOut();
-                LoginManager.getInstance().logOut();
-                Toast.makeText(this, "Sign out successfully", Toast.LENGTH_SHORT).show();
-                finish();
+                LogOut();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void LogOut() {
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
+        Toast.makeText(this, "Sign out successfully", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
@@ -277,6 +286,7 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
     @Override
     public void parseUserData(User user) {
         Intent intent = new Intent(this, SingUpView.class);
+        intent.setAction("DrawerView");
         intent.putExtra("user", user);
         startActivityForResult(intent, ACTIVITY_SUCC);
     }

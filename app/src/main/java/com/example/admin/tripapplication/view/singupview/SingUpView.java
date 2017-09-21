@@ -91,6 +91,8 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     User user, user_new;
 
+    String action;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,17 +117,20 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
         AddImgCircle();
 
         Intent intent = getIntent();
+        action = intent.getAction();
         user = intent.getParcelableExtra("user");
 
-        etName.setText(user.getFirstName());
-        etLastName.setText(user.getLastName());
-        etAddress.setText(user.getAddress());
-        etCity.setText(user.getCity());
-        etState.setText(user.getState());
-        etZipCode.setText(user.getZip());
-        etCountry.setText(user.getCountry());
-        etEmail.setText(user.getEmail());
-        etPhoneNumber.setText(user.getPhoneNumber());
+        if(user != null) {
+            etName.setText(user.getFirstName());
+            etLastName.setText(user.getLastName());
+            etAddress.setText(user.getAddress());
+            etCity.setText(user.getCity());
+            etState.setText(user.getState());
+            etZipCode.setText(user.getZip());
+            etCountry.setText(user.getCountry());
+            etEmail.setText(user.getEmail());
+            etPhoneNumber.setText(user.getPhoneNumber());
+        }
     }
 
     private void setupDaggerComponent() {
@@ -147,9 +152,16 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
         switch (id) {
             case R.id.log_out:
-                mAuth.signOut();
-                LoginManager.getInstance().logOut();
-                Toast.makeText(this, "Sign out successfully", Toast.LENGTH_SHORT).show();
+                if(action == null || action.isEmpty()) {
+                    mAuth.signOut();
+                    LoginManager.getInstance().logOut();
+                    Toast.makeText(this, "Sign out successfully", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Intent intent = new Intent();
+                    intent.putExtra("user", user_new);
+                    setResult(ACTIVITY_LOG_OUT, intent);
+                }
                 finish();
                 break;
         }
@@ -158,10 +170,11 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        mAuth.signOut();
-        LoginManager.getInstance().logOut();
-        Toast.makeText(this, "Sign out successfully", Toast.LENGTH_SHORT).show();
+        if(action == null || action.isEmpty()) {
+            mAuth.signOut();
+            LoginManager.getInstance().logOut();
+            Toast.makeText(this, "Sign out successfully", Toast.LENGTH_SHORT).show();
+        }
         finish();
 //        Intent startMain = new Intent(Intent.ACTION_MAIN);
 //        startMain.addCategory(Intent.CATEGORY_HOME);
@@ -225,8 +238,12 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
                     etLastName.setError("Last Name Required");
                 }
                 if(etPhoneNumber.getText().toString().isEmpty()) {
-                    error += " Name,";
+                    error += " Phone Number,";
                     etPhoneNumber.setError("Phone Required");
+                }
+                if(etEmail.getText().toString().isEmpty()) {
+                    error += " Email,";
+                    etEmail.setError("Email Required");
                 }
                 if(!error.isEmpty()) {
                     error = error.substring(0,error.length()-1);
