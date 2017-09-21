@@ -23,6 +23,7 @@ import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.injection.drawer.DaggerDrawerComponent;
+import com.example.admin.tripapplication.model.SearchTrip;
 import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
@@ -114,9 +115,12 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
             fbHelper.GetUserData((String) event.getObject());
         }
         if(event.getAction().equals(START_GOOGLE_TRIP)) {
-            Fragment fragment = new GoogleTripView();
+            Fragment fragment = GoogleTripView.newInstance((SearchTrip) event.getObject());
+
             setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
             setTitle("Trips near your area");
+            event.setAction(PASS_VALUES_GOOGLE);
+            org.greenrobot.eventbus.EventBus.getDefault().post(event);
         }
         if(event.getAction().equals(PARSE_SUBMITTED_REVIEW)){
             FirebaseHelper fbHelper = new FirebaseHelper(this);
@@ -278,7 +282,7 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
     }
 
     @Override
-    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation) {
+    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation, String source) {
 
     }
 

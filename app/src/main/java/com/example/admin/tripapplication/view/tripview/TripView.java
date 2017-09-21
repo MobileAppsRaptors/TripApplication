@@ -416,7 +416,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
     }
 
     @Override
-    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation) {
+    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation, String source) {
 
     }
 

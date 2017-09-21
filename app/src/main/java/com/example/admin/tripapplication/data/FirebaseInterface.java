@@ -16,7 +16,7 @@ import java.util.Map;
 public interface FirebaseInterface {
 
     void parseTrip(Trip trip);
-    void parseGeoFireTrip(String trip_key, GeoLocation geoLocation);
+    void parseGeoFireTrip(String trip_key, GeoLocation geoLocation, String source);
     void geoTripsFullyLoaded();
     void parseUserData(User user);
     void parseUserReviews(Map<String, Review> reviewList);

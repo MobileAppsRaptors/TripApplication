@@ -312,7 +312,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     }
 
     @Override
-    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation) {
+    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation, String source) {
 
     }
 

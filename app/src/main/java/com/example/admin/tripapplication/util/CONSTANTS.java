@@ -36,6 +36,7 @@ public class CONSTANTS {
     public static final int ACTIVITY_LOG_OUT = 1234;
     public static final String START_SIGNUP_ACTIVITY = "START_SIGNUP_ACTIVITY";
     public static final String START_GOOGLE_TRIP = "START_GOOGLE_TRIP";
+    public static final String PASS_VALUES_GOOGLE = "PASS_VALUES_GOOGLE";
     public static final String UPDATED_USER_PROFILE = "UPDATED_USER_PROFILE";
     public static final String PARSE_SUBMITTED_REVIEW = "PARSE_SUBMITTED_REVIEW";
 

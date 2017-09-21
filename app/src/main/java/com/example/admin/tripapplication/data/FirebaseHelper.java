@@ -219,16 +219,16 @@ public class FirebaseHelper {
     }
 
     //TODO still needs testing
-    public void GetGeoTrips(Location location, float radius){
+    public void GetGeoTrips(Location location, float radius, final String source){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        GeoFire geoFire = new GeoFire(database.getReference("geofire/destination"));
+        GeoFire geoFire = new GeoFire(database.getReference("geofire/" + source));
 
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLat(), location.getLng()), radius);
 
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                presenter.parseGeoFireTrip(key, location);
+                presenter.parseGeoFireTrip(key, location, source);
             }
 
             @Override
