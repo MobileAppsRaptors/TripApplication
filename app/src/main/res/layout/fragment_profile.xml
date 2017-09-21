@@ -147,6 +147,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/morado" />
 
+    <com.example.admin.tripapplication.util.NormalButtonIcon
+        android:id="@+id/btnAddReview"
+        android:text="&#xf005;"
+        android:textSize="65dp"
+        android:textColor="@color/bootstrap_brand_warning"
+        android:background="@android:color/transparent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/btnGoEditProfile"
+        android:layout_marginBottom="16dp" />
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/ivProfile_image"
