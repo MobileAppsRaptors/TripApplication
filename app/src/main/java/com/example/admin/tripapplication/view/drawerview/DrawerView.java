@@ -127,6 +127,9 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
             FirebaseHelper fbHelper = new FirebaseHelper(this);
             fbHelper.AddUserReview((Review) event.getObject());
         }
+        if(event.getAction().equals(OPEN_TRIP_VIEW)){
+            //TODO open trip view
+        }
     }
 
     @Override

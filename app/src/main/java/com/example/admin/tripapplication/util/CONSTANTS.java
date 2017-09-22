@@ -39,6 +39,7 @@ public class CONSTANTS {
     public static final String PASS_VALUES_GOOGLE = "PASS_VALUES_GOOGLE";
     public static final String UPDATED_USER_PROFILE = "UPDATED_USER_PROFILE";
     public static final String PARSE_SUBMITTED_REVIEW = "PARSE_SUBMITTED_REVIEW";
+    public static final String OPEN_TRIP_VIEW = "OPEN_TRIP_VIEW";
 
     // -------------------Used for fragments and Navigation Drawer --------------------------
     public static final String PACKAGE_NAME = "";
@@ -59,6 +60,9 @@ public class CONSTANTS {
 
         classSubName.put("Search a trip","view.triplistview.TripListView");
         classSubName.put("TripListView","Search a trip");
+
+        classSubName.put("View Trips","view.mytripsview.MyTripsView");
+        classSubName.put("TripView","View Trips");
 
         classSubName.put("Messages","view.messagesview.MessagesView");
         classSubName.put("MessagesView","Messages");

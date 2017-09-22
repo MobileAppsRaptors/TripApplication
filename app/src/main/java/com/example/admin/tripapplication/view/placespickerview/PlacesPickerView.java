@@ -107,6 +107,4 @@ public class PlacesPickerView extends Fragment implements OnMapReadyCallback {
     }
 
     //TODO get specified trip from database
-
-    //testing new commit pancho
 }
