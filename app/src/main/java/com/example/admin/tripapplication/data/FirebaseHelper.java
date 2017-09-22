@@ -309,14 +309,14 @@ public class FirebaseHelper {
     }
 
     //TODO still needs testing
-    public void GetTrip(String trip_id){
+    public void GetTrip(final String trip_id){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips/" + trip_id);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                presenter.parseTrip(dataSnapshot.getValue(Trip.class));
+                presenter.parseTrip(trip_id, dataSnapshot.getValue(Trip.class));
             }
 
             @Override
@@ -328,7 +328,7 @@ public class FirebaseHelper {
     }
 
     //TODO still needs testing
-    public void GetUserData(String user_id){
+    public void GetUserData(final String user_id){
         //field, tag, setting
         // if tag null read field
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -338,7 +338,7 @@ public class FirebaseHelper {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User out_user = dataSnapshot.getValue(User.class);
-                presenter.parseUserData(out_user);
+                presenter.parseUserData(user_id, out_user);
             }
 
             @Override
@@ -349,7 +349,7 @@ public class FirebaseHelper {
         });
     }
 
-    public void GetPublicUserData(String user_id){
+    public void GetPublicUserData(final String user_id){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference pictureRef = database.getReference("users").child(user_id).child("imageURL");
@@ -474,7 +474,7 @@ public class FirebaseHelper {
                 //Gender
                 data = (DataSnapshot) dbGenTask.getResult();
                 user.setSex(data.getValue(String.class));
-                presenter.parseUserData(user);
+                presenter.parseUserData(user_id, user);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -493,22 +493,4 @@ public class FirebaseHelper {
         return true;
     }
 
-    private float degreesToRadians(float degrees) {
-        return degrees * ((float)Math.PI) / 180;
-    }
-
-    private float distanceInKmBetweenEarthCoordinates(float lat1, float lon1, float lat2, float lon2) {
-        float earthRadiusKm = 6371;
-
-        float dLat = degreesToRadians(lat2-lat1);
-        float dLon = degreesToRadians(lon2-lon1);
-
-        lat1 = degreesToRadians(lat1);
-        lat2 = degreesToRadians(lat2);
-
-        float a = (float) Math.sin(dLat/2) * (float) Math.sin(dLat/2) +
-                (float) Math.sin(dLon/2) * (float) Math.sin(dLon/2) * (float) Math.cos(lat1) * (float) Math.cos(lat2);
-        float c = 2 * (float) Math.atan2((float) Math.sqrt(a), (float) Math.sqrt(1-a));
-        return earthRadiusKm * c;
-    }
 }

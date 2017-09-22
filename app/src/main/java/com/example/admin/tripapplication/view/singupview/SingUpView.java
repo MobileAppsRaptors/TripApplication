@@ -308,7 +308,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     }
 
     @Override
-    public void parseTrip(Trip trip) {
+    public void parseTrip(String trip_key, Trip trip) {
 
     }
 
@@ -323,7 +323,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     }
 
     @Override
-    public void parseUserData(User user) {
+    public void parseUserData(String user_key, User user) {
     }
 
     @Override

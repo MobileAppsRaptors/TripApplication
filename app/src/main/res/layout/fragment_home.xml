@@ -9,20 +9,170 @@
     tools:context=".view.homeview.HomeView"
     android:background="@drawable/blurry_home">
 
+    <com.example.admin.tripapplication.util.NormalButtonIcon
+        android:paddingBottom="35dp"
+        android:id="@+id/btnPublish"
+        android:layout_width="0dp"
+        android:layout_height="170dp"
+        android:background="@drawable/round_borderb"
+        android:text=""
+        android:textColor="#FFF"
+        android:textSize="120sp"
+        app:layout_constraintLeft_toLeftOf="@+id/btnSearch"
+        app:layout_constraintRight_toRightOf="@+id/btnSearch"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        android:layout_marginBottom="8dp" />
+
+    <com.example.admin.tripapplication.util.NormalButtonIcon
+        app:layout_constraintVertical_weight="1"
+
+        android:paddingBottom="35dp"
+
+        android:id="@+id/btnProfile"
+        android:layout_width="0dp"
+        android:layout_height="170dp"
+        android:background="@drawable/round_borderc"
+        android:text=""
+        android:textColor="#FFF"
+        android:textSize="120sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/btnMessage"
+        app:layout_constraintRight_toRightOf="@+id/btnMessage"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:layout_marginBottom="8dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <com.example.admin.tripapplication.util.NormalButtonIcon
+        android:paddingBottom="35dp"
+        app:layout_constraintVertical_weight="1"
+
+        android:id="@+id/btnMessage"
+        android:layout_width="0dp"
+        android:layout_height="170dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/round_bordera"
+        android:text=""
+        android:textColor="#FFF"
+        android:textSize="120sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline7"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnProfile" />
+
+    <com.example.admin.tripapplication.util.NormalButtonIcon
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        android:id="@+id/btnSearch"
+        android:layout_width="0dp"
+        android:layout_height="170dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/round_borderd"
+        android:paddingBottom="35dp"
+        android:text=""
+        android:textColor="#FFF"
+        android:textSize="120sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnPublish"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Profile"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:translationZ="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnProfile"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/btnProfile"
+        app:layout_constraintRight_toRightOf="@+id/btnProfile" />
+
+    <TextView
+        android:translationZ="20dp"
+        android:id="@+id/textView8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Search"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnSearch"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/btnSearch"
+        app:layout_constraintRight_toRightOf="@+id/btnSearch" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="Message"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:translationZ="20dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/btnMessage"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/btnMessage"
+        app:layout_constraintRight_toRightOf="@+id/btnMessage" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:textColor="#ffffff"
+        android:textSize="30dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:gravity="center"
+        android:text="Publish"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:translationZ="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnPublish"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/btnPublish"
+        app:layout_constraintRight_toRightOf="@+id/btnPublish" />
+
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="271dp"
         android:layout_height="223dp"
         android:src="@drawable/logo_splash"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintHorizontal_bias="0.504" />
+        app:layout_constraintHorizontal_bias="0.505" />
+
 
     <TextView
         android:textColor="#fff"
@@ -32,7 +182,9 @@
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="Wecome to TrippApp"
+        android:text="Wecome"
+
+
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -49,26 +201,22 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="27dp"
         android:gravity="center"
-
         android:textSize="25sp"
         android:text=" TripApp is a ride share app. Here you can post, search, and share rides and more "
         android:textAppearance="@android:style/TextAppearance.WindowTitle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
-    <Button
-        android:background="@color/green"
-        android:id="@+id/button2"
-        android:layout_width="0dp"
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Account"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
-
+        android:id="@+id/guideline7"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="384dp" />
 
 </android.support.constraint.ConstraintLayout>

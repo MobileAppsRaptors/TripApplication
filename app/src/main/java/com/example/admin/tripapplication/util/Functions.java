@@ -20,8 +20,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Functions {
 
@@ -111,6 +114,16 @@ public class Functions {
         }
     }
 
+    public static Date getCurrentDateDate(){
+        Date date = null;
+        try {
+            date = (new SimpleDateFormat("MM/dd/yyyy")).parse(Calendar.MONTH+"/"+Calendar.DAY_OF_MONTH+"/"+Calendar.YEAR);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
     public static String getCurrentDate(){
         final Calendar c = Calendar.getInstance();
         int mYear = c.get(Calendar.YEAR);
@@ -166,5 +179,24 @@ public class Functions {
             return mAuth.getCurrentUser().getPhotoUrl().toString();
         }
         return "";
+    }
+
+    public static double degreesToRadians(double degrees) {
+        return degrees * ((double)Math.PI) / 180;
+    }
+
+    public static double distanceInKmBetweenEarthCoordinates(double lat1, double lon1, double lat2, double lon2) {
+        double earthRadiusKm = 6371;
+
+        double dLat = degreesToRadians(lat2-lat1);
+        double dLon = degreesToRadians(lon2-lon1);
+
+        lat1 = degreesToRadians(lat1);
+        lat2 = degreesToRadians(lat2);
+
+        double a = (double) Math.sin(dLat/2) * (double) Math.sin(dLat/2) +
+                (double) Math.sin(dLon/2) * (double) Math.sin(dLon/2) * (double) Math.cos(lat1) * (double) Math.cos(lat2);
+        double c = 2 * (double) Math.atan2((double) Math.sqrt(a), (double) Math.sqrt(1-a));
+        return earthRadiusKm * c;
     }
 }

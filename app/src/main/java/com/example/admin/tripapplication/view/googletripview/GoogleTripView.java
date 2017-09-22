@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.data.FirebaseHelper;
@@ -37,6 +38,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -54,6 +56,7 @@ public class GoogleTripView extends Fragment implements OnMapReadyCallback, Fire
 
     private static final String TAG = "GoogleTripView";
     private static final String ARG_PARAM1 = "ARG_PARAM1";
+    public static Date CURRENT_DATE;
 
     GoogleMap mGoogleMap;
     MapView mapView;
@@ -130,9 +133,7 @@ public class GoogleTripView extends Fragment implements OnMapReadyCallback, Fire
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         Log.d(TAG, "onMapReady: ");
-        fbHelper.GetGeoTrips(searchTrip.getOrigin(),searchTrip.getRadius(),"origin");
-        fbHelper.GetGeoTrips(searchTrip.getOrigin(),searchTrip.getRadius(),"destination");
-
+        DoSerch();
     }
 
     @Override
@@ -158,37 +159,60 @@ public class GoogleTripView extends Fragment implements OnMapReadyCallback, Fire
         if(event.getAction().equals(PASS_VALUES_GOOGLE)) {
             searchTrip = (SearchTrip) event.getObject();
             Log.d(TAG, "onMessageEvent: ");
-            fbHelper.GetGeoTrips(searchTrip.getOrigin(),searchTrip.getRadius(),"origin");
-            fbHelper.GetGeoTrips(searchTrip.getOrigin(),searchTrip.getRadius(),"destination");
+            DoSerch();
         }
     }
 
-    @Override
-    public void parseTrip(Trip trip) {
-
+    private void DoSerch() {
+        fbHelper.GetGeoTrips(searchTrip.getOrigin(),searchTrip.getRadius(),"origin");
+        fbHelper.GetGeoTrips(searchTrip.getDestination(),searchTrip.getRadius(),"destination");
+        CURRENT_DATE = getCurrentDateDate();
     }
 
     @Override
-    public void parseGeoFireTrip(String trip_key, GeoLocation geoLocation, String source) {
+    public void parseTrip(String trip_id, Trip trip) {
+        //If Trip is not valid do nothing
+        if (!validateTrip(trip_id, trip, searchTrip)) return;
+
+        //Generate color and put the marker
+        BitmapDescriptor color = BitmapDescriptorFactory.defaultMarker(new Random().nextInt(360));
+        putMarker(origins.get(trip_id), trip_id, color);
+        putMarker(destinations.get(trip_id), trip_id, color);
+    }
+
+    private boolean validateTrip(String trip_id, Trip trip, SearchTrip searchTrip) {
+        if(trip.getDate().compareTo(CURRENT_DATE) >= 0
+                //&& searchTrip.getRadius() > distanceInKmBetweenEarthCoordinates(searchTrip.getOrigin().getLat(), searchTrip.getOrigin().getLng(), searchTrip.getDestination().getLat(), searchTrip.getDestination().getLng())
+                //&&
+                )
+            return true;
+
+        return false;
+    }
+
+    @Override
+    public void parseGeoFireTrip(String trip_id, GeoLocation geoLocation, String source) {
         Log.d(TAG, "parseGeoFireTrip: " + geoLocation.toString());
         if(source.equals("origin"))
-            origins.put(trip_key,geoLocation);
+            origins.put(trip_id,geoLocation);
         else
-            destinations.put(trip_key,geoLocation);
+            destinations.put(trip_id,geoLocation);
 
-        if(origins.get(trip_key) != null && destinations.get(trip_key) != null){
-            BitmapDescriptor color = BitmapDescriptorFactory.defaultMarker(new Random().nextInt(360));
-            putMarker(origins.get(trip_key), trip_key, color);
-            putMarker(destinations.get(trip_key), trip_key, color);
+        if(origins.get(trip_id) != null && destinations.get(trip_id) != null){
+            fbHelper.GetTrip(trip_id);
         }
 
     }
 
-    public void putMarker(GeoLocation geoLocation, String trip_key, BitmapDescriptor color){
+    private void validateMarker() {
+
+    }
+
+    public void putMarker(GeoLocation geoLocation, String trip_id, BitmapDescriptor color){
         LatLng latLng = new LatLng(geoLocation.latitude, geoLocation.longitude);
         mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title(trip_key)
+                .title(trip_id)
                 .snippet("I hope")
                 .icon(color));
 
@@ -203,7 +227,7 @@ public class GoogleTripView extends Fragment implements OnMapReadyCallback, Fire
     }
 
     @Override
-    public void parseUserData(User user) {
+    public void parseUserData(String user_id, User user) {
 
     }
 

@@ -31,8 +31,10 @@ import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.util.Events;
 import com.example.admin.tripapplication.view.googletripview.GoogleTripView;
 import com.example.admin.tripapplication.view.homeview.HomeView;
+import com.example.admin.tripapplication.view.messagesview.MessagesView;
 import com.example.admin.tripapplication.view.profileview.ProfileView;
 import com.example.admin.tripapplication.view.singupview.SingUpView;
+import com.example.admin.tripapplication.view.triplistview.TripListView;
 import com.example.admin.tripapplication.view.tripview.TripView;
 import com.facebook.login.LoginManager;
 import com.firebase.geofire.GeoLocation;
@@ -112,21 +114,47 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Events.MessageEvent event){
-        if(event.getAction().equals(START_SIGNUP_ACTIVITY)){
-            FirebaseHelper fbHelper = new FirebaseHelper(this);
-            fbHelper.GetUserData((String) event.getObject());
-        }
-        if(event.getAction().equals(START_GOOGLE_TRIP)) {
-            Fragment fragment = GoogleTripView.newInstance((SearchTrip) event.getObject());
+        FirebaseHelper fbHelper = new FirebaseHelper(this);
+        Fragment fragment;
+        switch (event.getAction()){
+            case START_SIGNUP_ACTIVITY:
+                fbHelper.GetUserData((String) event.getObject());
+                break;
+            case START_GOOGLE_TRIP:
+                fragment = GoogleTripView.newInstance((SearchTrip) event.getObject());
 
-            setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
-            setTitle("Trips near your area");
-            event.setAction(PASS_VALUES_GOOGLE);
-            org.greenrobot.eventbus.EventBus.getDefault().post(event);
-        }
-        if(event.getAction().equals(PARSE_SUBMITTED_REVIEW)){
-            FirebaseHelper fbHelper = new FirebaseHelper(this);
-            fbHelper.AddUserReview((Review) event.getObject());
+                setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
+                setTitle("Trips near your area");
+                event.setAction(PASS_VALUES_GOOGLE);
+                org.greenrobot.eventbus.EventBus.getDefault().post(event);
+                break;
+            case START_PUBLISH:
+                fragment = new TripView();
+
+                setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
+                setTitle("Publish a trip");
+                break;
+            case START_PROFILE:
+                fragment = new ProfileView();
+
+                setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
+                setTitle("Profile");
+                break;
+            case START_MESSAGE:
+                fragment = new MessagesView();
+
+                setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
+                setTitle("Messages");
+                break;
+            case START_SEARCH:
+                fragment = new TripListView();
+
+                setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
+                setTitle("Search a trip");
+                break;
+            case PARSE_SUBMITTED_REVIEW:
+                fbHelper.AddUserReview((Review) event.getObject());
+                break;
         }
         if(event.getAction().equals(OPEN_TRIP_VIEW)){
             Fragment fragment = new TripView();
@@ -293,7 +321,7 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
     }
 
     @Override
-    public void parseTrip(Trip trip) {
+    public void parseTrip(String trip_key, Trip trip) {
 
     }
 
@@ -308,7 +336,7 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
     }
 
     @Override
-    public void parseUserData(User user) {
+    public void parseUserData(String user_id, User user) {
         Intent intent = new Intent(this, SingUpView.class);
         intent.setAction("DrawerView");
         intent.putExtra("user", user);
