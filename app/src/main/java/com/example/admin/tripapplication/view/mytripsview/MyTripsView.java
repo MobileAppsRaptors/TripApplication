@@ -73,7 +73,7 @@ public class MyTripsView extends Fragment implements FirebaseInterface {
     }
 
     @Override
-    public void parseTrip(Trip trip) {
+    public void parseTrip(String trip_id, Trip trip) {
 
     }
 
@@ -88,7 +88,7 @@ public class MyTripsView extends Fragment implements FirebaseInterface {
     }
 
     @Override
-    public void parseUserData(User user) {
+    public void parseUserData(String user_id, User user) {
         if(user.getTripList() != null) {
             for (Trip trip : user.getTripList().values()) {
                 tripList.add(trip);
@@ -96,6 +96,7 @@ public class MyTripsView extends Fragment implements FirebaseInterface {
             tripAdapter.notifyDataSetChanged();
         }
     }
+
 
     @Override
     public void parseUserReviews(Map<String, Review> reviewList) {

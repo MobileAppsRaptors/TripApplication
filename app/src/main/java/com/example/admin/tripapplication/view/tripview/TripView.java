@@ -292,6 +292,8 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
             return;
         }
 
+        String description = tvDescription.getText().toString();
+
         Trip trip = new Trip(
                 origin,
                 destination,
@@ -300,6 +302,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
                 myUser,
                 seats,
                 cost,
+                description,
                 passengerList
         );
         Log.d(TAG, "CollectDataToInsert: Calling FBhelper");
