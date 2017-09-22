@@ -157,7 +157,7 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
                 break;
         }
         if(event.getAction().equals(OPEN_TRIP_VIEW)){
-            Fragment fragment = new TripView();
+            Fragment frag = new TripView();
             Trip trip = (Trip) event.getObject();
 
             Bundle args = new Bundle();
@@ -165,9 +165,9 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
 
             Log.d(TAG, "onMessageEvent: " + trip.getCreator().getFirstName());
 
-            fragment.setArguments(args);
+            frag.setArguments(args);
 
-            setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
+            setFragment(frag, R.id.content_main, getSupportFragmentManager(), this);
         }
     }
 

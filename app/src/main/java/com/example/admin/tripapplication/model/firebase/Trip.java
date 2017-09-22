@@ -25,11 +25,12 @@ public class Trip implements Parcelable {
     User creator;
     int seats;
     float cost;
+    String description;
     Map<String, User> passengerList;
 
     public Trip(){};
 
-    public Trip(Location origin, Location destination, Date date, double leniancy, User creator, int seats, float cost, Map<String, User> passengerList) {
+    public Trip(Location origin, Location destination, Date date, double leniancy, User creator, int seats, float cost, String description, Map<String, User> passengerList) {
         this.origin = origin;
         this.destination = destination;
         this.date = date;
@@ -37,6 +38,7 @@ public class Trip implements Parcelable {
         this.creator = creator;
         this.seats = seats;
         this.cost = cost;
+        this.description = description;
         this.passengerList = passengerList;
     }
 
@@ -96,6 +98,14 @@ public class Trip implements Parcelable {
         this.cost = cost;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Map<String, User> getPassengerList() {
         return passengerList;
     }
@@ -118,7 +128,8 @@ public class Trip implements Parcelable {
         dest.writeParcelable(this.creator, flags);
         dest.writeInt(this.seats);
         dest.writeFloat(this.cost);
-        if(this.passengerList != null) {
+        dest.writeString(this.description);
+        if(passengerList != null) {
             dest.writeInt(this.passengerList.size());
             for (Map.Entry<String, User> entry : this.passengerList.entrySet()) {
                 dest.writeString(entry.getKey());
@@ -136,6 +147,7 @@ public class Trip implements Parcelable {
         this.creator = in.readParcelable(User.class.getClassLoader());
         this.seats = in.readInt();
         this.cost = in.readFloat();
+        this.description = in.readString();
         int passengerListSize = in.readInt();
         this.passengerList = new HashMap<String, User>(passengerListSize);
         for (int i = 0; i < passengerListSize; i++) {
