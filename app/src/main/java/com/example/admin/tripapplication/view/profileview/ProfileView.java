@@ -3,6 +3,7 @@ package com.example.admin.tripapplication.view.profileview;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +62,6 @@ public class ProfileView extends Fragment implements FirebaseInterface {
     TextView tvPhoneNumber;
     @BindView(R.id.tvEmail)
     TextView tvEmail;
-    @BindView(R.id.tvAddress)
-    TextView tvAddress;
     @BindView(R.id.btnAddReview)
     NormalButtonIcon btnAddReview;
 
@@ -74,6 +73,7 @@ public class ProfileView extends Fragment implements FirebaseInterface {
     @Override
     public void onStart() {
         super.onStart();
+        if(!EventBus.getDefault().isRegistered(this))
         EventBus.getDefault().register(this);
     }
 
@@ -128,12 +128,11 @@ public class ProfileView extends Fragment implements FirebaseInterface {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Events.MessageEvent event) {
+        Log.d(TAG, "onMessageEvent: "+ event.getAction());
+
         if (event.getAction().equals(UPDATED_USER_PROFILE)) {
             User user = (User) event.getObject();
-            AddImgCircle(user, FirebaseAuth.getInstance());
-            tvName.setText(user.getFirstName() + " " + user.getLastName());
-            tvPhoneNumber.setText(user.getPhoneNumber());
-            tvEmail.setText(user.getEmail());
+            parseUserData(user);
         }
     }
 
@@ -189,8 +188,8 @@ public class ProfileView extends Fragment implements FirebaseInterface {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 

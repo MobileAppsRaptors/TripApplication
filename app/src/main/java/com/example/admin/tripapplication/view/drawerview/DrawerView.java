@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -134,6 +135,7 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
         switch (resultCode){
             case ACTIVITY_SUCC:
                 User user = data.getParcelableExtra("user");
+                Log.d(TAG, "onActivityResult: " + user.getFirstName() + user.getLastName());
                 Events.MessageEvent event = new Events.MessageEvent(UPDATED_USER_PROFILE, user);
                 EventBus.getDefault().post(event);
                 break;

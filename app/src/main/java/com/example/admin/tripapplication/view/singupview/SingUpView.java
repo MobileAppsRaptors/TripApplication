@@ -207,16 +207,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
             case R.id.btnSubmit:
                 FirebaseHelper fbHelper = new FirebaseHelper(this);
                 FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
-                userBuilder.setUser_id(fb_user.getUid());
-                userBuilder.setFirstName(etName.getText().toString());
-                userBuilder.setAddress(etAddress.getText().toString());
-                userBuilder.setCity(etCity.getText().toString());
-                userBuilder.setState(etState.getText().toString());
-                userBuilder.setZip(etZipCode.getText().toString());
-                userBuilder.setCountry(etCountry.getText().toString());
-                userBuilder.setEmail(etEmail.getText().toString());
-                userBuilder.setPhoneNumber(etPhoneNumber.getText().toString());
-                userBuilder.setLastName(etLastName.getText().toString());
+
                 int radioButtonID = Gender.getCheckedRadioButtonId();
                 switch (radioButtonID) {
                     case R.id.rMale:
@@ -251,6 +242,16 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
                     break;
                 }
 
+                userBuilder.setUser_id(fb_user.getUid());
+                userBuilder.setFirstName(etName.getText().toString());
+                userBuilder.setAddress(etAddress.getText().toString());
+                userBuilder.setCity(etCity.getText().toString());
+                userBuilder.setState(etState.getText().toString());
+                userBuilder.setZip(etZipCode.getText().toString());
+                userBuilder.setCountry(etCountry.getText().toString());
+                userBuilder.setEmail(etEmail.getText().toString());
+                userBuilder.setPhoneNumber(etPhoneNumber.getText().toString());
+                userBuilder.setLastName(etLastName.getText().toString());
                 user_new = userBuilder.createUser();
 
                 fbHelper.UpdateUser(user_new,customImage);
