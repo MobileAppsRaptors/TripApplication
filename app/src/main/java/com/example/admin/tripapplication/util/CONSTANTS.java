@@ -1,5 +1,8 @@
 package com.example.admin.tripapplication.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 
 /**
@@ -36,6 +39,10 @@ public class CONSTANTS {
     public static final int ACTIVITY_LOG_OUT = 1234;
     public static final String START_SIGNUP_ACTIVITY = "START_SIGNUP_ACTIVITY";
     public static final String START_GOOGLE_TRIP = "START_GOOGLE_TRIP";
+    public static final String START_PUBLISH = "START_PUBLISH";
+    public static final String START_PROFILE = "START_PROFILE";
+    public static final String START_MESSAGE = "START_MESSAGE";
+    public static final String START_SEARCH = "START_SEARCH";
     public static final String PASS_VALUES_GOOGLE = "PASS_VALUES_GOOGLE";
     public static final String UPDATED_USER_PROFILE = "UPDATED_USER_PROFILE";
     public static final String PARSE_SUBMITTED_REVIEW = "PARSE_SUBMITTED_REVIEW";

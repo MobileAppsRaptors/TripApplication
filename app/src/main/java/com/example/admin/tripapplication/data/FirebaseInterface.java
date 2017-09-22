@@ -15,10 +15,10 @@ import java.util.Map;
 
 public interface FirebaseInterface {
 
-    void parseTrip(Trip trip);
+    void parseTrip(String trip_id, Trip trip);
     void parseGeoFireTrip(String trip_key, GeoLocation geoLocation, String source);
     void geoTripsFullyLoaded();
-    void parseUserData(User user);
+    void parseUserData(String user_id, User user);
     void parseUserReviews(Map<String, Review> reviewList);
     void throwError(DatabaseError error);
     void operationSuccess(String operation);

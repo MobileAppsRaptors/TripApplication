@@ -411,7 +411,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
     }
 
     @Override
-    public void parseTrip(Trip trip) {
+    public void parseTrip(String trip_key, Trip trip) {
 
     }
 
@@ -426,7 +426,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
     }
 
     @Override
-    public void parseUserData(User user) {
+    public void parseUserData(String user_key, User user) {
         if (user != null) {
             CollectDataToInsert(user);
         }

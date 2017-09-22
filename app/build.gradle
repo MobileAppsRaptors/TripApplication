@@ -77,6 +77,8 @@ dependencies {
     //FancyButtons
     compile 'com.github.medyo:fancybuttons:1.8.4'
     compile 'org.greenrobot:eventbus:3.0.0'
+
+    compile 'com.github.medyo:android-about-page:1.2.1'
 }
 
 

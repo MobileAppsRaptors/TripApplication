@@ -143,7 +143,7 @@ public class ProfileView extends Fragment implements FirebaseInterface {
 
 
     @Override
-    public void parseTrip(Trip trip) {
+    public void parseTrip(String trip_key, Trip trip) {
 
     }
 
@@ -158,7 +158,7 @@ public class ProfileView extends Fragment implements FirebaseInterface {
     }
 
     @Override
-    public void parseUserData(User user) {
+    public void parseUserData(String user_key, User user) {
         AddImgCircle(user, FirebaseAuth.getInstance());
         tvName.setText(user.getFirstName() + " " + user.getLastName());
         tvPhoneNumber.setText(user.getPhoneNumber());

@@ -8,6 +8,8 @@
     <string name="facebook_app_id">350743785380244</string>
     <string name="fb_login_protocol_scheme">67e256c41bc38a44a40898127517a3dc</string>
 
+    <string name="copy_right">Copyrights © %1$d</string>
+
     <string name="ADD_USER_SUCC">add data success!</string>
     <string name="ADD_USER_FAIL">add data failed</string>
     <string name="GET_USER_SUCC">got user data!</string>

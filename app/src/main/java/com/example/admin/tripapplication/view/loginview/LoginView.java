@@ -368,7 +368,7 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
     }
 
     @Override
-    public void parseTrip(Trip trip) {
+    public void parseTrip(String trip_key, Trip trip) {
 
     }
 
@@ -383,7 +383,7 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
     }
 
     @Override
-    public void parseUserData(User user) {
+    public void parseUserData(String user_id, User user) {
         Intent intent;
         if(user == null){
             Log.d(TAG, "parseUserData: ");
