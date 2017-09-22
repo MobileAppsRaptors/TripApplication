@@ -40,6 +40,7 @@ public class CONSTANTS {
     public static final String UPDATED_USER_PROFILE = "UPDATED_USER_PROFILE";
     public static final String PARSE_SUBMITTED_REVIEW = "PARSE_SUBMITTED_REVIEW";
     public static final String OPEN_TRIP_VIEW = "OPEN_TRIP_VIEW";
+    public static final String PASS_VALUES_MYTRIP ="PASS_VALUES_MYTRIP";
 
     // -------------------Used for fragments and Navigation Drawer --------------------------
     public static final String PACKAGE_NAME = "";

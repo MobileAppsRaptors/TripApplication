@@ -33,6 +33,7 @@ import com.example.admin.tripapplication.view.googletripview.GoogleTripView;
 import com.example.admin.tripapplication.view.homeview.HomeView;
 import com.example.admin.tripapplication.view.profileview.ProfileView;
 import com.example.admin.tripapplication.view.singupview.SingUpView;
+import com.example.admin.tripapplication.view.tripview.TripView;
 import com.facebook.login.LoginManager;
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.auth.FirebaseAuth;
@@ -128,7 +129,17 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
             fbHelper.AddUserReview((Review) event.getObject());
         }
         if(event.getAction().equals(OPEN_TRIP_VIEW)){
-            //TODO open trip view
+            Fragment fragment = new TripView();
+            Trip trip = (Trip) event.getObject();
+
+            Bundle args = new Bundle();
+            args.putParcelable("trip", trip);
+
+            Log.d(TAG, "onMessageEvent: " + trip.getCreator().getFirstName());
+
+            fragment.setArguments(args);
+
+            setFragment(fragment, R.id.content_main, getSupportFragmentManager(), this);
         }
     }
 

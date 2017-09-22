@@ -29,15 +29,21 @@ import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.places.nearbyresult.Location;
+import com.example.admin.tripapplication.util.Events;
 import com.example.admin.tripapplication.util.Functions;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.games.event.Event;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.wefika.horizontalpicker.HorizontalPicker;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -58,6 +64,7 @@ import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.admin.tripapplication.util.CONSTANTS.ADD_TRIP_SUCC;
+import static com.example.admin.tripapplication.util.CONSTANTS.PASS_VALUES_MYTRIP;
 import static com.example.admin.tripapplication.util.Functions.*;
 
 public class TripView extends Fragment implements TripContract.View, FirebaseInterface {
@@ -171,6 +178,12 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         setupDaggerComponent();
 
         initPresenter();
+
+        Bundle args = getArguments();
+        if(args != null) {
+            Trip trip = args.getParcelable("trip");
+            populateTrip(trip);
+        }
     }
 
     private void initPresenter() {
@@ -293,6 +306,19 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         fbHelper.AddTrip(trip);
     }
 
+    public void populateTrip(Trip trip){
+        Date d =  trip.getDate();
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        int hour = c.get(Calendar.HOUR);
+        tvHour.setText(String.valueOf(hour));
+        tvDestination.setText(trip.getDestination().getLat() + " ," + trip.getDestination().getLng());
+        tvOrigin.setText(trip.getOrigin().getLat() + " ," + trip.getOrigin().getLng());
+        tvDate.setText(String.valueOf(c.get(Calendar.MONTH)) + "/" + String.valueOf(c.get(Calendar.DAY_OF_MONTH)) + "/" + String.valueOf(c.get(Calendar.YEAR)));
+        Seats.setSelectedItem(trip.getSeats());
+        etPrice.setText(Float.toString(trip.getCost()));
+    }
+
     @OnClick({R.id.BtnDate, R.id.tvDate, R.id.BtnHour, R.id.tvHour})
     public void onDateClicked(View view) {
         final Calendar c = Calendar.getInstance();
@@ -398,6 +424,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         }
     }
 
+
     @Override
     public void showError(String s) {
 
@@ -449,6 +476,8 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
         }
 
     }
+
+
 
     //TODO get specified trip from database
 
