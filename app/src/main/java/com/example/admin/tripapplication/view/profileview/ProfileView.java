@@ -132,7 +132,7 @@ public class ProfileView extends Fragment implements FirebaseInterface {
 
         if (event.getAction().equals(UPDATED_USER_PROFILE)) {
             User user = (User) event.getObject();
-            parseUserData(user);
+            parseUserData(user.getUser_id(), user);
         }
     }
 
