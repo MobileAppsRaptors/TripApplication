@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.admin.tripapplication.view.singupview.SingUpView">
+    tools:context="com.example.admin.tripapplication.view.signupview.SignUpView">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -16,6 +16,7 @@ import com.example.admin.tripapplication.data.FirebaseInterface;
 import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
+import com.example.admin.tripapplication.util.Events;
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
@@ -73,7 +74,7 @@ public class MyTripsView extends Fragment implements FirebaseInterface {
     }
 
     @Override
-    public void parseTrip(String trip_id, Trip trip) {
+    public void parseTrip(String trip_id, Trip trip, Events.MessageEvent event) {
 
     }
 

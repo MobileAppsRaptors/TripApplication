@@ -33,6 +33,11 @@ public class CONSTANTS {
     public static final String ADD_REVIEW_SUCC = "ADD_REVIEW_SUCC";
     public static final String GET_REVIEW_SUCC = "GET_REVIEW_SUCC";
     public static final String SIGN_UP_CANCEL = "SIGN_UP_CANCEL";
+    public static final String GET_TRIP_TO_DIALOG = "GET_TRIP_TO_DIALOG";
+    public static final String GET_TRIP_DATA_TO_DIALOG = "GET_TRIP_DATA_TO_DIALOG";
+
+    public static final String START_PHONE = "START_PHONE";
+    public static final String START_MESSAGE_DIALOG = "START_MESSAGE_DIALOG";
 
     public static final String MY_PREFS = "prefs";
     public static final String MY_PREFS_ZIP = "zip";
@@ -74,7 +79,7 @@ public class CONSTANTS {
         classSubName.put("TripListView","Search a trip");
 
         classSubName.put("View Trips","view.mytripsview.MyTripsView");
-        classSubName.put("TripView","View Trips");
+        classSubName.put("MyTripsView","View Trips");
 
         classSubName.put("Messages","view.messagesview.MessagesView");
         classSubName.put("MessagesView","Messages");

@@ -441,7 +441,7 @@ public class TripView extends Fragment implements TripContract.View, FirebaseInt
     }
 
     @Override
-    public void parseTrip(String trip_key, Trip trip) {
+    public void parseTrip(String trip_key, Trip trip, Events.MessageEvent event) {
 
     }
 

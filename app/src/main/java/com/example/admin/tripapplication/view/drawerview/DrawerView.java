@@ -1,6 +1,8 @@
 package com.example.admin.tripapplication.view.drawerview;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -33,7 +35,9 @@ import com.example.admin.tripapplication.view.googletripview.GoogleTripView;
 import com.example.admin.tripapplication.view.homeview.HomeView;
 import com.example.admin.tripapplication.view.messagesview.MessagesView;
 import com.example.admin.tripapplication.view.profileview.ProfileView;
-import com.example.admin.tripapplication.view.singupview.SingUpView;
+import com.example.admin.tripapplication.view.settingsview.ZipDialogClass;
+import com.example.admin.tripapplication.view.signupview.SignUpView;
+import com.example.admin.tripapplication.view.tripinfoview.TripInfoView;
 import com.example.admin.tripapplication.view.triplistview.TripListView;
 import com.example.admin.tripapplication.view.tripview.TripView;
 import com.facebook.login.LoginManager;
@@ -154,6 +158,19 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
                 break;
             case PARSE_SUBMITTED_REVIEW:
                 fbHelper.AddUserReview((Review) event.getObject());
+                break;
+            case GET_TRIP_TO_DIALOG:
+                TripInfoView cdd = new TripInfoView(DrawerView.this,(String) event.getObject());
+                cdd.show();
+                break;
+            case START_PHONE:
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse((String) event.getObject()));
+                startActivity(intent);
+                break;
+            //TODO NEEDS Message TO SEND
+            case START_MESSAGE_DIALOG:
+
                 break;
         }
         if(event.getAction().equals(OPEN_TRIP_VIEW)){
@@ -321,7 +338,7 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
     }
 
     @Override
-    public void parseTrip(String trip_key, Trip trip) {
+    public void parseTrip(String trip_key, Trip trip, Events.MessageEvent event) {
 
     }
 
@@ -337,7 +354,7 @@ public class DrawerView extends AppCompatActivity implements NavigationView.OnNa
 
     @Override
     public void parseUserData(String user_id, User user) {
-        Intent intent = new Intent(this, SingUpView.class);
+        Intent intent = new Intent(this, SignUpView.class);
         intent.setAction("DrawerView");
         intent.putExtra("user", user);
         startActivityForResult(intent, ACTIVITY_SUCC);

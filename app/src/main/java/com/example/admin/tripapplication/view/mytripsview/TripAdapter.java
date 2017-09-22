@@ -17,6 +17,7 @@ import com.example.admin.tripapplication.util.NormalButtonIcon;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,24 +58,39 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         Date d = tripList.get(position).getDate();
         Calendar c = Calendar.getInstance();
         c.setTime(d);
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        holder.tvDate.setText(month + "/" + day + "/" + year);
+        String date = new SimpleDateFormat("MM/dd/yyyy").format(tripList.get(position).getDate());
+        holder.tvDate.setText(date);
+
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         List<Address> addresses = new ArrayList<>();
-        double lat = tripList.get(position).getDestination().getLat();
-        double lng = tripList.get(position).getDestination().getLng();
+        double lat = tripList.get(position).getOrigin().getLat();
+        double lng = tripList.get(position).getOrigin().getLng();
         try {
             addresses = geocoder.getFromLocation(lat, lng, 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
         if(addresses.get(0) != null) {
-            holder.tvLocation.setText(addresses.get(0).getAddressLine(0));
+            holder.tvOrigin.setText(addresses.get(0).getAddressLine(0));
         } else {
-            holder.tvLocation.setText(lat + " ," + lng);
+            holder.tvOrigin.setText(lat + " ," + lng);
         }
+
+        geocoder = new Geocoder(context, Locale.getDefault());
+        addresses = new ArrayList<>();
+        lat = tripList.get(position).getDestination().getLat();
+        lng = tripList.get(position).getDestination().getLng();
+        try {
+            addresses = geocoder.getFromLocation(lat, lng, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(addresses.get(0) != null) {
+            holder.tvDestination.setText(addresses.get(0).getAddressLine(0));
+        } else {
+            holder.tvDestination.setText(lat + " ," + lng);
+        }
+
         //TODO rating system dosn't work!
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,8 +116,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         TextView tvCreator;
         @BindView(R.id.tvDate)
         TextView tvDate;
-        @BindView(R.id.tvLocation)
-        TextView tvLocation;
+        @BindView(R.id.tvOrigin)
+        TextView tvOrigin;
+        @BindView(R.id.tvDestination)
+        TextView tvDestination;
         @BindViews({ R.id.btnOneStar, R.id.btnTwoStar, R.id.btnThreeStar, R.id.btnFourStar, R.id.btnFiveStar })
         List<NormalButtonIcon> nameViews;
 

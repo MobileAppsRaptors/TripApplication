@@ -1,4 +1,4 @@
-package com.example.admin.tripapplication.view.singupview;
+package com.example.admin.tripapplication.view.signupview;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,12 +21,12 @@ import android.widget.Toast;
 import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.data.FirebaseHelper;
 import com.example.admin.tripapplication.data.FirebaseInterface;
-import com.example.admin.tripapplication.injection.singup.DaggerSingUpComponent;
+import com.example.admin.tripapplication.injection.singup.DaggerSignUpComponent;
 import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.firebase.UserBuilder;
-import com.facebook.Profile;
+import com.example.admin.tripapplication.util.Events;
 import com.facebook.login.LoginManager;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -48,7 +48,7 @@ import butterknife.OnClick;
 import static com.example.admin.tripapplication.util.CONSTANTS.*;
 import static com.example.admin.tripapplication.util.Functions.*;
 
-public class SingUpView extends AppCompatActivity implements FirebaseInterface {
+public class SignUpView extends AppCompatActivity implements FirebaseInterface {
     private static final String TAG = "SingUpView";
     private static final int PICK_IMAGE = 11;
     @BindView(R.id.rMale)
@@ -86,7 +86,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     Toolbar toolbar;
 
     @Inject
-    SingUpPresenter presenter;
+    SignUpPresenter presenter;
     private Uri customImage;
 
     User user, user_new;
@@ -96,7 +96,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_singup);
+        setContentView(R.layout.activity_signup);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         ButterKnife.bind(this);
@@ -134,7 +134,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     }
 
     private void setupDaggerComponent() {
-        DaggerSingUpComponent.create().inject(this);
+        DaggerSignUpComponent.create().inject(this);
     }
 
     @Override
@@ -308,7 +308,7 @@ public class SingUpView extends AppCompatActivity implements FirebaseInterface {
     }
 
     @Override
-    public void parseTrip(String trip_key, Trip trip) {
+    public void parseTrip(String trip_key, Trip trip, Events.MessageEvent event) {
 
     }
 

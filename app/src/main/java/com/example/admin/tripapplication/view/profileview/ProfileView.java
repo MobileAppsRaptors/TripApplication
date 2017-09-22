@@ -142,7 +142,7 @@ public class ProfileView extends Fragment implements FirebaseInterface {
 
 
     @Override
-    public void parseTrip(String trip_key, Trip trip) {
+    public void parseTrip(String trip_key, Trip trip, Events.MessageEvent event) {
 
     }
 
@@ -158,10 +158,12 @@ public class ProfileView extends Fragment implements FirebaseInterface {
 
     @Override
     public void parseUserData(String user_key, User user) {
-        AddImgCircle(user, FirebaseAuth.getInstance());
-        tvName.setText(user.getFirstName() + " " + user.getLastName());
-        tvPhoneNumber.setText(user.getPhoneNumber());
-        tvEmail.setText(user.getEmail());
+        try {
+            AddImgCircle(user, FirebaseAuth.getInstance());
+            tvName.setText(user.getFirstName() + " " + user.getLastName());
+            tvPhoneNumber.setText(user.getPhoneNumber());
+            tvEmail.setText(user.getEmail());
+        }catch(Exception ex){}
     }
 
     private void AddImgCircle(User user, FirebaseAuth mAuth) {

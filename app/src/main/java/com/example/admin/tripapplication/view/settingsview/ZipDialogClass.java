@@ -39,7 +39,7 @@ public class ZipDialogClass extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.zip_dialog);
+        setContentView(R.layout.dialog_zip);
 
         ButterKnife.bind(this);
     }

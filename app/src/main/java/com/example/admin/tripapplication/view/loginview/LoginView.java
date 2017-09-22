@@ -4,13 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,9 +19,9 @@ import com.example.admin.tripapplication.injection.login.DaggerLoginComponent;
 import com.example.admin.tripapplication.model.firebase.Review;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
+import com.example.admin.tripapplication.util.Events;
 import com.example.admin.tripapplication.view.drawerview.DrawerView;
-import com.example.admin.tripapplication.view.profileview.ProfileView;
-import com.example.admin.tripapplication.view.singupview.SingUpView;
+import com.example.admin.tripapplication.view.signupview.SignUpView;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -42,7 +38,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.wallet.WalletConstants;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -368,7 +363,7 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
     }
 
     @Override
-    public void parseTrip(String trip_key, Trip trip) {
+    public void parseTrip(String trip_key, Trip trip, Events.MessageEvent event) {
 
     }
 
@@ -387,7 +382,7 @@ public class LoginView extends AppCompatActivity implements GoogleApiClient.OnCo
         Intent intent;
         if(user == null){
             Log.d(TAG, "parseUserData: ");
-            intent = new Intent(this, SingUpView.class);
+            intent = new Intent(this, SignUpView.class);
         } else {
             Log.d(TAG, "parseUserData: start drawerview");
             intent = new Intent(this, DrawerView.class);

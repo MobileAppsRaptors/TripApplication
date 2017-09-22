@@ -9,6 +9,7 @@ import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.firebase.UserBuilder;
 import com.example.admin.tripapplication.model.places.nearbyresult.Location;
+import com.example.admin.tripapplication.util.Events;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -313,14 +314,16 @@ public class FirebaseHelper {
     }
 
     //TODO still needs testing
-    public void GetTrip(final String trip_id){
+    public void GetTrip(String trip_id){GetTrip(trip_id, null);}
+
+    public void GetTrip(final String trip_id, final Events.MessageEvent event){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("trips/" + trip_id);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                presenter.parseTrip(trip_id, dataSnapshot.getValue(Trip.class));
+                presenter.parseTrip(trip_id, dataSnapshot.getValue(Trip.class), event);
             }
 
             @Override
@@ -498,7 +501,9 @@ public class FirebaseHelper {
     }
 
     public void stopListener() {
-        geoQueryOrigin.removeAllListeners();
-        geoQueryDestination.removeAllListeners();
+        try {
+            geoQueryOrigin.removeAllListeners();
+            geoQueryDestination.removeAllListeners();
+        }catch(Exception ex){}
     }
 }

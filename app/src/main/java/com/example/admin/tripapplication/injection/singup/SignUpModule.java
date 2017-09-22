@@ -1,17 +1,17 @@
 package com.example.admin.tripapplication.injection.singup;
 
-import com.example.admin.tripapplication.view.singupview.SingUpPresenter;
+import com.example.admin.tripapplication.view.signupview.SignUpPresenter;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class SingUpModule {
+public class SignUpModule {
 
     @Provides
 //    @Singleton this is going to make the class as singleton
-    SingUpPresenter providesSingUpPresenter(){
+    SignUpPresenter providesSingUpPresenter(){
 
-        return new SingUpPresenter();
+        return new SignUpPresenter();
     }
 }
