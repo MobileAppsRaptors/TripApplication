@@ -1,6 +1,8 @@
 package com.example.admin.tripapplication.view.mytripsview;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +16,12 @@ import com.example.admin.tripapplication.util.NormalButtonIcon;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -57,6 +61,20 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
         holder.tvDate.setText(month + "/" + day + "/" + year);
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        List<Address> addresses = new ArrayList<>();
+        double lat = tripList.get(position).getDestination().getLat();
+        double lng = tripList.get(position).getDestination().getLng();
+        try {
+            addresses = geocoder.getFromLocation(lat, lng, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(addresses.get(0) != null) {
+            holder.tvLocation.setText(addresses.get(0).getAddressLine(0));
+        } else {
+            holder.tvLocation.setText(lat + " ," + lng);
+        }
         //TODO rating system dosn't work!
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +100,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         TextView tvCreator;
         @BindView(R.id.tvDate)
         TextView tvDate;
+        @BindView(R.id.tvLocation)
+        TextView tvLocation;
         @BindViews({ R.id.btnOneStar, R.id.btnTwoStar, R.id.btnThreeStar, R.id.btnFourStar, R.id.btnFiveStar })
         List<NormalButtonIcon> nameViews;
 
