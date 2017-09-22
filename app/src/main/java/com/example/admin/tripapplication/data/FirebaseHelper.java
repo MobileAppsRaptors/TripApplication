@@ -50,6 +50,8 @@ public class FirebaseHelper {
 
     public static final String TAG = "FirebaseHelper";
     FirebaseInterface presenter;
+    private GeoQuery geoQueryOrigin;
+    private GeoQuery geoQueryDestination;
 
     public FirebaseHelper(FirebaseInterface fbInterface){
         this.presenter = fbInterface;
@@ -224,7 +226,6 @@ public class FirebaseHelper {
         GeoFire geoFire = new GeoFire(database.getReference("geofire/" + source));
 
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLat(), location.getLng()), radius);
-
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
@@ -253,7 +254,10 @@ public class FirebaseHelper {
                 presenter.throwError(error);
             }
         });
-
+        if(source.equals("origin"))
+            geoQueryOrigin = geoQuery;
+        else
+            geoQueryDestination = geoQuery;
     }
 
     public void AddImg(final User user, final Uri uri, final String user_id){
@@ -493,4 +497,8 @@ public class FirebaseHelper {
         return true;
     }
 
+    public void stopListener() {
+        geoQueryOrigin.removeAllListeners();
+        geoQueryDestination.removeAllListeners();
+    }
 }

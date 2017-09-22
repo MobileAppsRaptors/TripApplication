@@ -37,8 +37,9 @@ public class AboutView extends Fragment {
         adsElement.setTitle("Advertise with us");
 
         View aboutPage = new AboutPage(getContext())
+                .setDescription("")
                 .isRTL(false)
-                .setImage(R.drawable.logo_splash)
+                //.setImage(R.drawable.logo_splash)
                 .addItem(new Element().setTitle("Version 1.1"))
                 .addItem(adsElement)
                 .addGroup("Connect with us")

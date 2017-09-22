@@ -34,6 +34,10 @@ public class CONSTANTS {
     public static final String GET_REVIEW_SUCC = "GET_REVIEW_SUCC";
     public static final String SIGN_UP_CANCEL = "SIGN_UP_CANCEL";
 
+    public static final String MY_PREFS = "prefs";
+    public static final String MY_PREFS_ZIP = "zip";
+    public static final String MY_PREFS_UNITS = "units";
+
     //Event constants
     public static final int ACTIVITY_SUCC = 123;
     public static final int ACTIVITY_LOG_OUT = 1234;

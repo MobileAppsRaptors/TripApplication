@@ -2,6 +2,10 @@ package com.example.admin.tripapplication.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -198,5 +202,19 @@ public class Functions {
                 (double) Math.sin(dLon/2) * (double) Math.sin(dLon/2) * (double) Math.cos(lat1) * (double) Math.cos(lat2);
         double c = 2 * (double) Math.atan2((double) Math.sqrt(a), (double) Math.sqrt(1-a));
         return earthRadiusKm * c;
+    }
+
+    public static Bitmap drawableToBitmap (Drawable drawable, int color) {
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 }

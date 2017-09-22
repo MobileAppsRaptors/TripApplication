@@ -1,9 +1,17 @@
 package com.example.admin.tripapplication.view.googletripview;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +28,9 @@ import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.model.firebase.User;
 import com.example.admin.tripapplication.model.places.nearbyresult.Location;
 import com.example.admin.tripapplication.util.Events;
+import com.example.admin.tripapplication.util.PicassoMarker;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -29,17 +39,26 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -144,6 +163,7 @@ public class GoogleTripView extends Fragment implements OnMapReadyCallback, Fire
 
     @Override
     public void onStop() {
+        fbHelper.stopListener();
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
@@ -167,6 +187,13 @@ public class GoogleTripView extends Fragment implements OnMapReadyCallback, Fire
         fbHelper.GetGeoTrips(searchTrip.getOrigin(),searchTrip.getRadius(),"origin");
         fbHelper.GetGeoTrips(searchTrip.getDestination(),searchTrip.getRadius(),"destination");
         CURRENT_DATE = getCurrentDateDate();
+
+        LatLng originLatLng = new LatLng(searchTrip.getOrigin().getLat(), searchTrip.getOrigin().getLng());
+        LatLng destinationLatLng = new LatLng(searchTrip.getDestination().getLat(), searchTrip.getDestination().getLng());
+
+        String url = getMapsApiDirectionsUrl();
+        ReadTask downloadTask = new ReadTask();
+        downloadTask.execute(url);
     }
 
     @Override
@@ -175,9 +202,53 @@ public class GoogleTripView extends Fragment implements OnMapReadyCallback, Fire
         if (!validateTrip(trip_id, trip, searchTrip)) return;
 
         //Generate color and put the marker
-        BitmapDescriptor color = BitmapDescriptorFactory.defaultMarker(new Random().nextInt(360));
-        putMarker(origins.get(trip_id), trip_id, color);
-        putMarker(destinations.get(trip_id), trip_id, color);
+        //BitmapDescriptor color = BitmapDescriptorFactory.defaultMarker(new Random().nextInt(360));
+        Bitmap icon = CustomMarker();
+        putMarker(origins.get(trip_id), trip_id, icon);
+        putMarker(destinations.get(trip_id), trip_id, icon);
+        drawRadius(origins.get(trip_id), searchTrip.getRadius());
+        drawRadius(destinations.get(trip_id), searchTrip.getRadius());
+
+        moveCameraBetween(origins.get(trip_id), destinations.get(trip_id));
+    }
+
+    private void moveCameraBetween(GeoLocation origin, GeoLocation destination) {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        LatLng originLatLng = new LatLng(origin.latitude, origin.longitude);
+        LatLng destinationLatLng = new LatLng(destination.latitude, destination.longitude);
+        builder.include(originLatLng);
+        builder.include(destinationLatLng);
+        LatLngBounds bounds = builder.build();
+        int padding = 0; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        mGoogleMap.moveCamera(cu);
+        mGoogleMap.animateCamera(cu);
+    }
+
+    private void drawRadius(GeoLocation geoLocation, Float radius) {
+        mGoogleMap.addCircle(new CircleOptions()
+                .center(new LatLng(geoLocation.latitude, geoLocation.longitude))
+                .radius(radius*1000)
+                .strokeColor(0x220000FF)
+                .fillColor(0x220000FF)
+        );
+    }
+
+    private Bitmap CustomMarker() {
+        Random rnd = new Random();
+        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= 0.8f; // value component
+        color = Color.HSVToColor(hsv);
+
+        Bitmap ob = drawableToBitmap(ContextCompat.getDrawable(getActivity(), R.drawable.ic_car), color);
+        Bitmap obm = Bitmap.createBitmap(ob.getWidth(), ob.getHeight(), ob.getConfig());
+        Canvas canvas = new Canvas(obm);
+        Paint paint = new Paint();
+        paint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP));
+        canvas.drawBitmap(ob, 0f, 0f, paint);
+        return obm;
     }
 
     private boolean validateTrip(String trip_id, Trip trip, SearchTrip searchTrip) {
@@ -204,21 +275,17 @@ public class GoogleTripView extends Fragment implements OnMapReadyCallback, Fire
 
     }
 
-    private void validateMarker() {
-
-    }
-
-    public void putMarker(GeoLocation geoLocation, String trip_id, BitmapDescriptor color){
+    public void putMarker(GeoLocation geoLocation, String trip_id, Bitmap icon){
         LatLng latLng = new LatLng(geoLocation.latitude, geoLocation.longitude);
+
         mGoogleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title(trip_id)
                 .snippet("I hope")
-                .icon(color));
-
-        CameraPosition Liberty = CameraPosition.builder().target(latLng).zoom(16).bearing(0).tilt(45).build();
-
-        mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+                .icon(BitmapDescriptorFactory.fromBitmap(icon)));
+//        PicassoMarker marker = new PicassoMarker(mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(trip_id)));
+//
+//        Picasso.with(getContext()).load(R.drawable.ic_car).into(marker);
     }
 
     @Override
@@ -244,5 +311,83 @@ public class GoogleTripView extends Fragment implements OnMapReadyCallback, Fire
     @Override
     public void operationSuccess(String operation) {
 
+    }
+
+    private String getMapsApiDirectionsUrl() {
+        String origin = searchTrip.getOrigin().getLat() + "," + searchTrip.getOrigin().getLng();
+        String destination = searchTrip.getDestination().getLat() + "," + searchTrip.getDestination().getLng();
+
+        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + origin + "&destination=" + destination + "&key=" + API_KEY;
+        return url;
+    }
+
+    private class ReadTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... url) {
+            String data = "";
+            try {
+                HttpConnection http = new HttpConnection();
+                data = http.readUrl(url[0]);
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            new ParserTask().execute(result);
+        }
+    }
+
+    private class ParserTask extends
+            AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(
+                String... jsonData) {
+
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try {
+                jObject = new JSONObject(jsonData[0]);
+                PathJSONParser parser = new PathJSONParser();
+                routes = parser.parse(jObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> routes) {
+            ArrayList<LatLng> points = null;
+            PolylineOptions polyLineOptions = null;
+
+            // traversing through routes
+            for (int i = 0; i < routes.size(); i++) {
+                points = new ArrayList<LatLng>();
+                polyLineOptions = new PolylineOptions();
+                List<HashMap<String, String>> path = routes.get(i);
+
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
+
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+
+                    points.add(position);
+                }
+
+                polyLineOptions.addAll(points);
+                polyLineOptions.width(6);
+                polyLineOptions.color(Color.RED);
+            }
+
+            mGoogleMap.addPolyline(polyLineOptions);
+        }
     }
 }
