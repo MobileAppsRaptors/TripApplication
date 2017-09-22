@@ -10,14 +10,17 @@ import android.widget.TextView;
 import com.example.admin.tripapplication.R;
 import com.example.admin.tripapplication.model.firebase.Trip;
 import com.example.admin.tripapplication.util.Events;
+import com.example.admin.tripapplication.util.NormalButtonIcon;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 import static com.example.admin.tripapplication.util.CONSTANTS.OPEN_TRIP_VIEW;
@@ -54,6 +57,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
         holder.tvDate.setText(month + "/" + day + "/" + year);
+        //TODO rating system dosn't work!
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +82,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         TextView tvCreator;
         @BindView(R.id.tvDate)
         TextView tvDate;
+        @BindViews({ R.id.btnOneStar, R.id.btnTwoStar, R.id.btnThreeStar, R.id.btnFourStar, R.id.btnFiveStar })
+        List<NormalButtonIcon> nameViews;
 
         public ViewHolder(View itemView) {
             super(itemView);
